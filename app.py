@@ -127,7 +127,6 @@ midfielder_models = {
     "SVR": midfielder_svr_model,
     "XGBoost": midfielder_xgb_model
 }
-
 # ----------------------------
 # Load Defender Models
 # ----------------------------
@@ -176,7 +175,24 @@ if module == "Overview & Data Summary":
 
     # Load your main DataFrame (assume it's saved as df_model)
     # For demonstration, we'll read from a CSV; adjust accordingly.
-    df_model = pd.read_csv("male_players.csv")
+    import zipfile
+    import pandas as pd
+
+    # Path to your zip file
+    zip_path = 'male_players.csv.zip'
+
+    # Open the zip file
+    with zipfile.ZipFile(zip_path, 'r') as z:
+        # List all files inside the zip
+        file_list = z.namelist()
+        print("Files in zip:", file_list)
+
+        # Assuming there's only one CSV file inside:
+        csv_filename = file_list[0]
+
+        # Read the CSV file into a pandas DataFrame
+        with z.open(csv_filename) as f:
+            df_model = pd.read_csv(f)
     st.subheader("Data Sample")
     st.dataframe(df_model.head())
 
@@ -260,6 +276,15 @@ elif module == "Interactive Prediction":
         user_input[attr] = st.number_input(f"Enter value for {attr}", min_value=0, max_value=100, value=50)
 
     if st.button("Predict Potential"):
+        def load_model(filename):
+            path = os.path.join(os.getcwd(), 'saved_models', filename)
+            try:
+                with open(path, 'rb') as f:
+                    return pickle.load(f)
+            except FileNotFoundError:
+                st.error(f"❌ Model file not found: {path}")
+            except Exception as e:
+                st.error(f"⚠️ Error loading model: {e}")
         # Load the corresponding model file for the selected position and model
         model_filename = saved_models[position][model_choice]
         print("Model filename:", model_filename)
