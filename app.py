@@ -179,13 +179,16 @@ if module == "Overview & Data Summary":
     import pandas as pd
 
     # Load the compressed Pickle file instead of reading from a zip
-    df_model = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
-
+    df_model = pd.read_pickle("male_players_compressed.pkl.bz2", compression="bz2")
+    df_result = pd.read_pickle("df_model_result_compressed.pkl.gz", compression="gz")
     st.subheader("Data Sample")
     st.dataframe(df_model.head())
 
     st.subheader("Basic Statistics")
     st.write(df_model.describe())
+
+    st.subheader("Result Sample")
+    st.dataframe(df_result.head())
 
     # Add more charts as needed...
 
