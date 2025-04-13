@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle
+import convert_to_pickle
 import os
 
 
@@ -173,26 +173,14 @@ if module == "Overview & Data Summary":
     st.header("Overview & Data Summary")
     st.write("This module displays a brief summary of the dataset.")
 
+
     # Load your main DataFrame (assume it's saved as df_model)
     # For demonstration, we'll read from a CSV; adjust accordingly.
-    import zipfile
     import pandas as pd
 
-    # Path to your zip file
-    zip_path = 'male_players.csv.zip'
+    # Load the compressed Pickle file instead of reading from a zip
+    df_model = pd.read_pickle("male_players_compressed.pkl.bz2", compression="bz2")
 
-    # Open the zip file
-    with zipfile.ZipFile(zip_path, 'r') as z:
-        # List all files inside the zip
-        file_list = z.namelist()
-        print("Files in zip:", file_list)
-
-        # Assuming there's only one CSV file inside:
-        csv_filename = file_list[0]
-
-        # Read the CSV file into a pandas DataFrame
-        with z.open(csv_filename) as f:
-            df_model = pd.read_csv(f)
     st.subheader("Data Sample")
     st.dataframe(df_model.head())
 
