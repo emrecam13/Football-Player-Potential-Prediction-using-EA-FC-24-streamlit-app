@@ -263,8 +263,24 @@ elif module == "Interactive Prediction":
     st.subheader(f"Input values for the {position} attributes:")
     attributes = selected_features[position]
     user_input = {}
+    
     for attr in attributes:
-        user_input[attr] = st.number_input(f"Enter value for {attr}", min_value=0, max_value=100, value=50)
+        if attr == "age":
+            # Age must be between 16 and 40
+            user_input[attr] = st.number_input(
+                f"Enter value for {attr}", 
+                min_value=16, 
+                max_value=40, 
+                value=25  # sensible default in the middle
+            )
+        else:
+            # All other attributes between 0 and 100
+            user_input[attr] = st.number_input(
+                f"Enter value for {attr}", 
+                min_value=0, 
+                max_value=100, 
+                value=50
+            )
 
     if st.button("Predict Potential"):
         def load_model(filename):
