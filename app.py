@@ -274,12 +274,12 @@ elif module == "Interactive Prediction":
                 value=25  # sensible default in the middle
             )
         else:
-            # All other attributes between 0 and 100
+            # All other attributes between 0 and 99
             user_input[attr] = st.number_input(
                 f"Enter value for {attr}", 
                 min_value=0, 
-                max_value=100, 
-                value=50
+                max_value=99, 
+                value=70
             )
 
     if st.button("Predict Potential"):
