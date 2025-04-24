@@ -320,7 +320,7 @@ elif module == "About":
 # ============================
 # Deployment Instruction (Optional)
 # ============================
-st.sidebar.markdown("### Deployment")
+st.sidebar.markdown("### Additional info")
 st.sidebar.info("""
-To deploy this app using ngrok, run:
+info
 """)
