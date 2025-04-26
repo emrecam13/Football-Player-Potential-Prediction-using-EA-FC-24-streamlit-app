@@ -190,7 +190,7 @@ if module == "Overview & Data Summary":
     num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
     fig, axes = plt.subplots(len(num_cols), 2, figsize=(8, 4*len(num_cols)))
     for ax, col in zip(axes, num_cols):
-        sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
+        sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
