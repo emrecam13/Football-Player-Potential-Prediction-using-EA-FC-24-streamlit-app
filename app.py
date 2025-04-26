@@ -167,88 +167,80 @@ module = st.sidebar.selectbox("Select Module",
                               ["Overview & Data Summary", "Model Evaluation", "Interactive Prediction", "About"])
 
 # =============================
-# =============================
 # 3. Overview & Data Summary Module
 # =============================
 if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
-    st.write("This module displays a brief summary of the dataset and key visualizations.")
+    st.write("Below you’ll see first the _raw_ dataset that you prepared, then—separately—the model results you generated.")
 
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns
 
-    # 1) Load your raw features and your result DataFrame
-    df_model  = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
-    df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
+    # 1) Load raw features
+    df_model = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
 
-    # 2) Bring in position_group (no re-mapping needed)
-    df_combined = df_model.merge(
-        df_result[["short_name", "position_group"]],
-        on="short_name",
-        how="left"
-    )
-
-    # 3) Raw Data Sample & Basic Stats
-    st.subheader("Raw Data Sample")
+    # 2) Show raw data
+    st.subheader("🔹 Raw Data Sample")
     st.dataframe(df_model.head())
 
-    st.subheader("Basic Statistics")
+    st.subheader("🔹 Raw Data Basic Statistics")
     st.write(df_model.describe())
 
-    # 4) Distributions of Key Numeric Features
-    st.subheader("Distributions of Key Metrics")
-    num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
-    fig, axes = plt.subplots(len(num_cols), 1, figsize=(8, 4 * len(num_cols)))
-    for ax, col in zip(axes, num_cols):
+    # 3) Visualize raw features
+    # 3a) Distributions
+    st.subheader("🔹 Distributions of Raw Numeric Features")
+    raw_num_cols = ["age","height_cm","weight_kg","overall","potential"]
+    fig, axes = plt.subplots(len(raw_num_cols),1,figsize=(8,4*len(raw_num_cols)))
+    for ax,col in zip(axes, raw_num_cols):
         sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
-    # 5) Count of Players by Position Group
-    st.subheader("Players by Position Group")
-    st.bar_chart(df_combined["position_group"].value_counts())
+    # 3b) Position counts in the raw data
+    if "position_group" in df_model.columns:
+        st.subheader("🔹 Raw Data: Players by Position Group")
+        st.bar_chart(df_model["position_group"].value_counts())
+    else:
+        st.warning("`position_group` not found in raw data—did you add it?")
 
-    # 6) Average Overall vs Potential by Position
-    st.subheader("Average Overall vs Potential by Position")
-    avg_stats = df_combined.groupby("position_group")[["overall", "potential"]].mean()
-    st.dataframe(avg_stats)
-    st.line_chart(avg_stats)
+    # 4) Now load your results (predictions + residuals)
+    df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
 
-    # 7) Correlation Matrix
-    st.subheader("Correlation Matrix (Numeric Features)")
-    corr = df_model[num_cols].corr()
-    fig, ax = plt.subplots(figsize=(6, 5))
-    sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
-    st.pyplot(fig)
+    st.subheader("🔸 Result Sample (Model Outputs)")
+    st.dataframe(df_result.head())
 
-    # 8) Predicted vs Actual (XGBoost)
-    st.subheader("XGBoost: Predicted vs Actual Potential")
-    fig, ax = plt.subplots(figsize=(6, 6))
+    # 5) Predicted vs. Actual scatter (XGBoost)
+    st.subheader("🔸 Predicted vs. Actual Potential (XGBoost)")
+    fig, ax = plt.subplots(figsize=(6,6))
     ax.scatter(df_result["potential"], df_result["predicted_potential_XGBoost"], alpha=0.3)
-    ax.plot(
-        [df_result["potential"].min(), df_result["potential"].max()],
-        [df_result["potential"].min(), df_result["potential"].max()],
-        "r--", linewidth=2
-    )
+    mn, mx = df_result["potential"].min(), df_result["potential"].max()
+    ax.plot([mn,mx],[mn,mx],"r--", linewidth=2)
     ax.set_xlabel("Actual Potential")
     ax.set_ylabel("Predicted Potential")
     st.pyplot(fig)
 
-    # 9) Residuals Distribution
-    st.subheader("Residuals by Model")
-    res_cols = [c for c in df_result.columns if c.startswith("residuals_")]
-    df_res = df_result[res_cols].rename(columns=lambda x: x.replace("residuals_", ""))
-    df_melt = df_res.melt(var_name="Model", value_name="Residual")
-    fig, ax = plt.subplots(figsize=(8, 4))
-    sns.boxplot(x="Model", y="Residual", data=df_melt, ax=ax)
-    st.pyplot(fig)
+    # 6) Residual distribution (XGBoost)
+    if "residuals_XGBoost" in df_result.columns:
+        st.subheader("🔸 Residuals Distribution (XGBoost)")
+        fig, ax = plt.subplots(figsize=(8,4))
+        sns.histplot(df_result["residuals_XGBoost"], kde=True, ax=ax)
+        ax.set_xlabel("Residual (Actual − Predicted)")
+        ax.set_title("XGBoost Residuals")
+        st.pyplot(fig)
+    else:
+        st.warning("`residuals_XGBoost` column not found in results.")
 
-    # 10) Finally, show the Result Sample
-    st.subheader("Result Sample")
-    st.dataframe(df_result.head())
-
+    # 7) (Optional) compare mean & max errors by position
+    if "position_group" in df_result.columns:
+        agg = df_result.groupby("position_group").agg(
+            mean_resid=("residuals_XGBoost","mean"),
+            max_resid=("residuals_XGBoost", lambda x: x.abs().max())
+        )
+        st.subheader("🔸 XGBoost Residuals by Position Group")
+        st.dataframe(agg)
+    # end if
 
 # ============================
 # 4. Model Evaluation Module
