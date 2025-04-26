@@ -167,6 +167,7 @@ module = st.sidebar.selectbox("Select Module",
                               ["Overview & Data Summary", "Model Evaluation", "Interactive Prediction", "About"])
 
 # =============================
+# =============================
 # 3. Overview & Data Summary Module
 # =============================
 if module == "Overview & Data Summary":
@@ -174,25 +175,29 @@ if module == "Overview & Data Summary":
     st.header("Overview & Data Summary")
     st.write("This module displays a brief summary of the dataset and key visualizations.")
 
-    
-    # 1) Load your data
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns
 
+    # 1) Load your raw features and your result DataFrame
     df_model  = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
 
-    # 2) Raw Data Sample & Basic Stats
+    # 2) Bring in position_group (no re-mapping needed)
+    df_combined = df_model.merge(
+        df_result[["short_name", "position_group"]],
+        on="short_name",
+        how="left"
+    )
+
+    # 3) Raw Data Sample & Basic Stats
     st.subheader("Raw Data Sample")
     st.dataframe(df_model.head())
-    # 9) Finally, show the Result Sample
-    st.subheader("Result Sample")
-    st.dataframe(df_result.head())
+
     st.subheader("Basic Statistics")
     st.write(df_model.describe())
 
-    # 3) Distributions of Key Numeric Features (using df_model, not df_result)
+    # 4) Distributions of Key Numeric Features
     st.subheader("Distributions of Key Metrics")
     num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
     fig, axes = plt.subplots(len(num_cols), 1, figsize=(8, 4 * len(num_cols)))
@@ -201,41 +206,37 @@ if module == "Overview & Data Summary":
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
-    # 4) Count of Players by Position Group
+    # 5) Count of Players by Position Group
     st.subheader("Players by Position Group")
-    st.bar_chart(df_model["position_group"].value_counts())
+    st.bar_chart(df_combined["position_group"].value_counts())
 
-    # 5) Average Overall vs Potential by Position
+    # 6) Average Overall vs Potential by Position
     st.subheader("Average Overall vs Potential by Position")
-    avg_stats = df_model.groupby("position_group")[["overall", "potential"]].mean()
+    avg_stats = df_combined.groupby("position_group")[["overall", "potential"]].mean()
     st.dataframe(avg_stats)
     st.line_chart(avg_stats)
 
-    # 6) Correlation Matrix
+    # 7) Correlation Matrix
     st.subheader("Correlation Matrix (Numeric Features)")
     corr = df_model[num_cols].corr()
     fig, ax = plt.subplots(figsize=(6, 5))
     sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
     st.pyplot(fig)
 
-    # 7) Predicted vs Actual (XGBoost)
-    st.subheader("XGBoost: Predicted vs. Actual Potential")
+    # 8) Predicted vs Actual (XGBoost)
+    st.subheader("XGBoost: Predicted vs Actual Potential")
     fig, ax = plt.subplots(figsize=(6, 6))
-    ax.scatter(
-        df_result["potential"],
-        df_result["predicted_potential_XGBoost"],
-        alpha=0.3
-    )
+    ax.scatter(df_result["potential"], df_result["predicted_potential_XGBoost"], alpha=0.3)
     ax.plot(
         [df_result["potential"].min(), df_result["potential"].max()],
         [df_result["potential"].min(), df_result["potential"].max()],
-        "r--", lw=2
+        "r--", linewidth=2
     )
     ax.set_xlabel("Actual Potential")
     ax.set_ylabel("Predicted Potential")
     st.pyplot(fig)
 
-    # 8) Residuals Distribution
+    # 9) Residuals Distribution
     st.subheader("Residuals by Model")
     res_cols = [c for c in df_result.columns if c.startswith("residuals_")]
     df_res = df_result[res_cols].rename(columns=lambda x: x.replace("residuals_", ""))
@@ -244,9 +245,10 @@ if module == "Overview & Data Summary":
     sns.boxplot(x="Model", y="Residual", data=df_melt, ax=ax)
     st.pyplot(fig)
 
-    # 9) Finally, show the Result Sample
+    # 10) Finally, show the Result Sample
     st.subheader("Result Sample")
     st.dataframe(df_result.head())
+
 
 # ============================
 # 4. Model Evaluation Module
