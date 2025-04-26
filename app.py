@@ -173,7 +173,10 @@ if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
     st.write("This module displays a brief summary of the dataset and key visualizations.")
-
+    # 9) Finally, show the Result Sample
+    st.subheader("Result Sample")
+    st.dataframe(df_result.head())
+    
     # 1) Load your data
     import pandas as pd
     import matplotlib.pyplot as plt
