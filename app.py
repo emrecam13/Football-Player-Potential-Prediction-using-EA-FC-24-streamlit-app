@@ -198,18 +198,18 @@ if module == "Overview & Data Summary":
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
-    # 3b) Position counts in the raw data
-    if "position_group" in df_model.columns:
-        st.subheader("🔹 Raw Data: Players by Position Group")
-        st.bar_chart(df_model["position_group"].value_counts())
-    else:
-        st.warning("`position_group` not found in raw data—did you add it?")
-
     # 4) Now load your results (predictions + residuals)
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
-
     st.subheader("🔸 Result Sample (Model Outputs)")
     st.dataframe(df_result.head())
+    
+    
+    # 3b) Position counts in the result data
+    if "position_group" in df_result.columns:
+        st.subheader("🔹 Raw Data: Players by Position Group")
+        st.bar_chart(df_result["position_group"].value_counts())
+    else:
+        st.warning("`position_group` not found in raw data—did you add it?")
 
     # 5) Predicted vs. Actual scatter (XGBoost)
     st.subheader("🔸 Predicted vs. Actual Potential (XGBoost)")
