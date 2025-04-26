@@ -219,15 +219,12 @@ if module == "Overview & Data Summary":
     st.pyplot(fig)
 
     # 6) Residual distribution (XGBoost)
-    if "residuals_XGB" in df_result.columns:
-        st.subheader("🔸 Residuals Distribution (XGBoost)")
-        fig, ax = plt.subplots(figsize=(8,4))
-        sns.histplot(df_result["residuals_XGBoost"], kde=True, ax=ax)
-        ax.set_xlabel("Residual (Actual − Predicted)")
-        ax.set_title("XGBoost Residuals")
-        st.pyplot(fig)
-    else:
-        st.warning("`residuals_XGBoost` column not found in results.")
+    st.subheader("🔸 Residuals Distribution (XGBoost)")
+    fig, ax = plt.subplots(figsize=(8,4))
+    sns.histplot(df_result["residuals_XGB"], kde=True, ax=ax)
+    ax.set_xlabel("Residual (Actual − Predicted)")
+    ax.set_title("XGBoost Residuals")
+    st.pyplot(fig)
 
     # 7) (Optional) compare mean & max errors by position
     agg = df_result.groupby("position_group").agg(
