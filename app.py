@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 import pickle
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # ============================
 # 1. Configuration and Setup
@@ -165,15 +166,15 @@ st.sidebar.title("Navigation")
 module = st.sidebar.selectbox("Select Module",
                               ["Overview & Data Summary", "Model Evaluation", "Interactive Prediction", "About"])
 
-# ============================
+# =============================
 # 3. Overview & Data Summary Module
-# ============================
+# =============================
 if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
     st.write("This module displays a brief summary of the dataset and key visualizations.")
 
-    # Load your data
+    # 1) Load your data
     df_model  = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
 
@@ -235,7 +236,7 @@ if module == "Overview & Data Summary":
     # 9) Finally, show the Result Sample
     st.subheader("Result Sample")
     st.dataframe(df_result.head())
-    
+
 # 4. Model Evaluation Module
 # ============================
 elif module == "Model Evaluation":
