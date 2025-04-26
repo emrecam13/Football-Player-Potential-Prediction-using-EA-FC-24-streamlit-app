@@ -175,6 +175,10 @@ if module == "Overview & Data Summary":
     st.write("This module displays a brief summary of the dataset and key visualizations.")
 
     # 1) Load your data
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
     df_model  = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
 
@@ -185,36 +189,40 @@ if module == "Overview & Data Summary":
     st.subheader("Basic Statistics")
     st.write(df_model.describe())
 
-    # 3) Distributions of Key Numeric Features
+    # 3) Distributions of Key Numeric Features (using df_model, not df_result)
     st.subheader("Distributions of Key Metrics")
     num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
-    fig, axes = plt.subplots(len(num_cols), 2, figsize=(8, 4*len(num_cols)))
+    fig, axes = plt.subplots(len(num_cols), 1, figsize=(8, 4 * len(num_cols)))
     for ax, col in zip(axes, num_cols):
-        sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
+        sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
     # 4) Count of Players by Position Group
     st.subheader("Players by Position Group")
-    st.bar_chart(df_result["position_group"].value_counts())
+    st.bar_chart(df_model["position_group"].value_counts())
 
     # 5) Average Overall vs Potential by Position
     st.subheader("Average Overall vs Potential by Position")
-    avg_stats = df_result.groupby("position_group")[["overall","potential"]].mean()
+    avg_stats = df_model.groupby("position_group")[["overall", "potential"]].mean()
     st.dataframe(avg_stats)
     st.line_chart(avg_stats)
 
     # 6) Correlation Matrix
     st.subheader("Correlation Matrix (Numeric Features)")
-    corr = df_result[num_cols].corr()
-    fig, ax = plt.subplots(figsize=(6,5))
+    corr = df_model[num_cols].corr()
+    fig, ax = plt.subplots(figsize=(6, 5))
     sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
     st.pyplot(fig)
 
     # 7) Predicted vs Actual (XGBoost)
     st.subheader("XGBoost: Predicted vs. Actual Potential")
-    fig, ax = plt.subplots(figsize=(6,6))
-    ax.scatter(df_result["potential"], df_result["predicted_potential_XGBoost"], alpha=0.3)
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.scatter(
+        df_result["potential"],
+        df_result["predicted_potential_XGBoost"],
+        alpha=0.3
+    )
     ax.plot(
         [df_result["potential"].min(), df_result["potential"].max()],
         [df_result["potential"].min(), df_result["potential"].max()],
@@ -227,9 +235,9 @@ if module == "Overview & Data Summary":
     # 8) Residuals Distribution
     st.subheader("Residuals by Model")
     res_cols = [c for c in df_result.columns if c.startswith("residuals_")]
-    df_res = df_result[res_cols].rename(columns=lambda x: x.replace("residuals_",""))
+    df_res = df_result[res_cols].rename(columns=lambda x: x.replace("residuals_", ""))
     df_melt = df_res.melt(var_name="Model", value_name="Residual")
-    fig, ax = plt.subplots(figsize=(8,4))
+    fig, ax = plt.subplots(figsize=(8, 4))
     sns.boxplot(x="Model", y="Residual", data=df_melt, ax=ax)
     st.pyplot(fig)
 
@@ -237,6 +245,7 @@ if module == "Overview & Data Summary":
     st.subheader("Result Sample")
     st.dataframe(df_result.head())
 
+# ============================
 # 4. Model Evaluation Module
 # ============================
 elif module == "Model Evaluation":
