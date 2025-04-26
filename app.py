@@ -243,7 +243,7 @@ if module == "Overview & Data Summary":
     cols_to_plot = st.multiselect(
         "Select one or more numeric columns to visualize", 
         options=numeric_cols,
-        default=["overall", "potential"]
+        default=["predicted_potential_XGBoost"]
     )
     
     # 2) pick chart type
@@ -271,7 +271,7 @@ if module == "Overview & Data Summary":
                         data=df_result,
                         x=col,
                         hue=group_by,
-                        multiple="stack",   # or "dodge"/"layer"
+                        multiple="dodge",   # or "stack"/"layer"
                         bins=30,
                         kde=True,
                         ax=ax
