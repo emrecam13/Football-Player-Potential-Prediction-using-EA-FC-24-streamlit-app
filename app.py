@@ -219,7 +219,7 @@ if module == "Overview & Data Summary":
     st.pyplot(fig)
 
     # 6) Residual distribution (XGBoost)
-    if "residuals_XGBoost" in df_result.columns:
+    if "residuals_XGB" in df_result.columns:
         st.subheader("🔸 Residuals Distribution (XGBoost)")
         fig, ax = plt.subplots(figsize=(8,4))
         sns.histplot(df_result["residuals_XGBoost"], kde=True, ax=ax)
@@ -232,8 +232,8 @@ if module == "Overview & Data Summary":
     # 7) (Optional) compare mean & max errors by position
     if "position_group" in df_result.columns:
         agg = df_result.groupby("position_group").agg(
-            mean_resid=("residuals_XGBoost","mean"),
-            max_resid=("residuals_XGBoost", lambda x: x.abs().max())
+            mean_resid=("residuals_XGB","mean"),
+            max_resid=("residuals_XGB", lambda x: x.abs().max())
         )
         st.subheader("🔸 XGBoost Residuals by Position Group")
         st.dataframe(agg)
