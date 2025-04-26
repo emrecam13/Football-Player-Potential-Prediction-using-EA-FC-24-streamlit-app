@@ -272,7 +272,7 @@ if module == "Overview & Data Summary":
                             data=df_result,
                             x=col,
                             hue=group_by,
-                            multiple="stack",    # or "layer" / "dodge"
+                            multiple="dodge",    # or "layer" / "stack"
                             bins=30,
                             kde=True,
                             ax=ax
