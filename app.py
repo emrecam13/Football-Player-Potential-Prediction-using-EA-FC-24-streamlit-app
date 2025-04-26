@@ -171,17 +171,14 @@ module = st.sidebar.selectbox("Select Module",
 if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
-    st.write("This module displays a brief summary of the dataset.")
+    st.write("This module displays a brief summary of the dataset and key visualizations.")
 
-
-    # Load your main DataFrame (assume it's saved as df_model)
-    # For demonstration, we'll read from a CSV; adjust accordingly.
-    import pandas as pd
-
-    # Load the compressed Pickle file instead of reading from a zip
-    df_model = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
+    # Load your data
+    df_model  = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
-    st.subheader("Data Sample")
+
+    # 1) Show the sample
+    st.subheader("Raw Data Sample")
     st.dataframe(df_model.head())
 
     st.subheader("Basic Statistics")
@@ -190,9 +187,57 @@ if module == "Overview & Data Summary":
     st.subheader("Result Sample")
     st.dataframe(df_result.head())
 
-    # Add more charts as needed...
+    # 2) Distribution of Key Numerical Features
+    st.subheader("Distributions of Key Metrics")
+    num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
+    fig, axes = plt.subplots(len(num_cols), 1, figsize=(8, 4*len(num_cols)))
+    for ax, col in zip(axes, num_cols):
+        sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
+        ax.set_title(f"{col} Distribution")
+    st.pyplot(fig)
 
-# ============================
+    # 3) Position Group Breakdown
+    st.subheader("Players by Position Group")
+    pos_counts = df_model["position_group"].value_counts()
+    st.bar_chart(pos_counts)
+
+    # 4) Average Potential & Overall by Position
+    st.subheader("Average Overall vs Potential by Position Group")
+    grp = df_model.groupby("position_group")[["overall","potential"]].mean()
+    st.dataframe(grp)
+    st.line_chart(grp)
+
+    # 5) Correlation Heatmap
+    st.subheader("Correlation Matrix (Numeric Features)")
+    corr = df_model[num_cols].corr()
+    fig, ax = plt.subplots(figsize=(6,5))
+    sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+    st.pyplot(fig)
+
+    # 6) Model Residuals & Predictions Comparison
+    st.subheader("Prediction vs. Actual (XGBoost)")
+    fig, ax = plt.subplots(figsize=(6,6))
+    ax.scatter(df_result["potential"], df_result["predicted_potential_XGBoost"], alpha=0.3)
+    ax.plot([df_result["potential"].min(), df_result["potential"].max()],
+            [df_result["potential"].min(), df_result["potential"].max()],
+            "r--", lw=2)
+    ax.set_xlabel("Actual Potential")
+    ax.set_ylabel("Predicted Potential (XGBoost)")
+    ax.set_title("XGBoost: Predicted vs. Actual")
+    st.pyplot(fig)
+
+    st.subheader("Residuals Distribution by Model")
+    res_cols = [c for c in df_result.columns if c.startswith("residuals_")]
+    df_melt = (
+        df_result[res_cols]
+        .rename(columns=lambda x: x.replace("residuals_",""))
+        .melt(var_name="Model", value_name="Residual")
+    )
+    fig, ax = plt.subplots(figsize=(8,4))
+    sns.boxplot(x="Model", y="Residual", data=df_melt, ax=ax)
+    ax.set_title("Residuals by Model")
+    st.pyplot(fig)
+
 # 4. Model Evaluation Module
 # ============================
 elif module == "Model Evaluation":
