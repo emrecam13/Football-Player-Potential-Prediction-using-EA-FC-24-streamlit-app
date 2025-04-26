@@ -230,14 +230,12 @@ if module == "Overview & Data Summary":
         st.warning("`residuals_XGBoost` column not found in results.")
 
     # 7) (Optional) compare mean & max errors by position
-    if "position_group" in df_result.columns:
-        agg = df_result.groupby("position_group").agg(
-            mean_resid=("residuals_XGB","mean"),
-            max_resid=("residuals_XGB", lambda x: x.abs().max())
-        )
-        st.subheader("🔸 XGBoost Residuals by Position Group")
-        st.dataframe(agg)
-    # end if
+    agg = df_result.groupby("position_group").agg(
+        mean_resid=("residuals_XGB","mean"),
+        max_resid=("residuals_XGB", lambda x: x.abs().max())
+    )
+    st.subheader("🔸 XGBoost Residuals by Position Group")
+    st.dataframe(agg)
 
 # ============================
 # 4. Model Evaluation Module
