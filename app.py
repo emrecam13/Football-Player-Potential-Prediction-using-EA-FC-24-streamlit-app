@@ -205,11 +205,8 @@ if module == "Overview & Data Summary":
     
     
     # 3b) Position counts in the result data
-    if "position_group" in df_result.columns:
-        st.subheader("🔹 Raw Data: Players by Position Group")
-        st.bar_chart(df_result["position_group"].value_counts())
-    else:
-        st.warning("`position_group` not found in raw data—did you add it?")
+    st.subheader("🔹 Raw Data: Players by Position Group")
+    st.bar_chart(df_result["position_group"].value_counts())
 
     # 5) Predicted vs. Actual scatter (XGBoost)
     st.subheader("🔸 Predicted vs. Actual Potential (XGBoost)")
