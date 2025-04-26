@@ -173,9 +173,7 @@ if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
     st.write("This module displays a brief summary of the dataset and key visualizations.")
-    # 9) Finally, show the Result Sample
-    st.subheader("Result Sample")
-    st.dataframe(df_result.head())
+
     
     # 1) Load your data
     import pandas as pd
@@ -188,7 +186,9 @@ if module == "Overview & Data Summary":
     # 2) Raw Data Sample & Basic Stats
     st.subheader("Raw Data Sample")
     st.dataframe(df_model.head())
-
+    # 9) Finally, show the Result Sample
+    st.subheader("Result Sample")
+    st.dataframe(df_result.head())
     st.subheader("Basic Statistics")
     st.write(df_model.describe())
 
