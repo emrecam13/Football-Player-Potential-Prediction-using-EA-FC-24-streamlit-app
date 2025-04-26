@@ -239,7 +239,7 @@ if module == "Overview & Data Summary":
     st.markdown("### 📊 Build Your Own Plot")
 
     # 1) pick numeric columns
-    numeric_cols = df_model.select_dtypes(include="number").columns.tolist()
+    numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
     cols_to_plot = st.multiselect(
         "Select one or more numeric columns to visualize", 
         options=numeric_cols,
@@ -257,9 +257,9 @@ if module == "Overview & Data Summary":
         for col in cols_to_plot:
             fig, ax = plt.subplots()
             if chart_type == "Histogram":
-                sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
+                sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
             else:
-                sns.boxplot(x=df_model[col], ax=ax)
+                sns.boxplot(x=df_result[col], ax=ax)
             ax.set_title(f"{chart_type} of {col}")
             st.pyplot(fig)
 
@@ -269,7 +269,7 @@ if module == "Overview & Data Summary":
             x_col = st.selectbox("X-axis", cols_to_plot, index=0)
             y_col = st.selectbox("Y-axis", cols_to_plot, index=1)
             fig, ax = plt.subplots()
-            sns.scatterplot(data=df_model, x=x_col, y=y_col, ax=ax, alpha=0.6)
+            sns.scatterplot(data=df_result, x=x_col, y=y_col, ax=ax, alpha=0.6)
             ax.set_title(f"Scatter: {y_col} vs {x_col}")
             st.pyplot(fig)
         else:
