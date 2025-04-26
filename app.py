@@ -262,41 +262,40 @@ if module == "Overview & Data Summary":
     
     # 4) render
     if chart_type in ["Histogram", "Boxplot"]:
-        for col in cols_to_plot:
-            fig, ax = plt.subplots()
-            if chart_type == "Histogram":
-                for col in cols_to_plot:
-                    fig, ax = plt.subplots()
-                    if group_by != "None":
-                        sns.histplot(
-                            data=df_result,
-                            x=col,
-                            hue=group_by,
-                            multiple="dodge",    # or "layer" / "stack"
-                            bins=30,
-                            kde=True,
-                            ax=ax
-                        )
-                    else:
-                        sns.histplot(
-                            data=df_result,
-                            x=col,
-                            bins=30,
-                            kde=True,
-                            ax=ax
-                        )
-                    ax.set_title(f"Histogram of {col}" + (f" grouped by {group_by}" if group_by!="None" else ""))
-                    st.pyplot(fig)
-                # hue not supported by histplot in older seaborn, so we skip grouping here
-                sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
+    for col in cols_to_plot:
+        fig, ax = plt.subplots()
+        if chart_type == "Histogram":
+            if group_by != "None":
+                # grouped histogram
+                sns.histplot(
+                    data=df_result,
+                    x=col,
+                    hue=group_by,
+                    multiple="stack",   # or "dodge"/"layer"
+                    bins=30,
+                    kde=True,
+                    ax=ax
+                )
+                ax.set_title(f"Histogram of {col} (grouped by {group_by})")
             else:
-                if group_by != "None":
-                    sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
-                else:
-                    sns.boxplot(y=df_result[col], ax=ax)
-    
-            ax.set_title(f"{chart_type} of {col}" + (f" grouped by {group_by}" if group_by!="None" else ""))
-            st.pyplot(fig)
+                # single histogram
+                sns.histplot(
+                    data=df_result,
+                    x=col,
+                    bins=30,
+                    kde=True,
+                    ax=ax
+                )
+                ax.set_title(f"Histogram of {col}")
+        else:  # Boxplot
+            if group_by != "None":
+                sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
+                ax.set_title(f"Boxplot of {col} by {group_by}")
+            else:
+                sns.boxplot(y=df_result[col], ax=ax)
+                ax.set_title(f"Boxplot of {col}")
+
+        st.pyplot(fig)
     
     elif chart_type == "Scatter":
         if len(cols_to_plot) >= 2:
