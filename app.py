@@ -234,43 +234,61 @@ if module == "Overview & Data Summary":
     st.subheader("🔸 XGBoost Residuals by Position Group")
     st.dataframe(agg)
 
-    # 8) Custom, User-Driven Visualization
+    # 8) Custom, User-Driven Visualization (with grouping)
     # ——————————————————————————————
     st.markdown("### 📊 Build Your Own Plot")
-
-    # 1) pick numeric columns
+    
+    # 1) pick numeric columns from df_result
     numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
     cols_to_plot = st.multiselect(
         "Select one or more numeric columns to visualize", 
         options=numeric_cols,
         default=["overall", "potential"]
     )
-
+    
     # 2) pick chart type
     chart_type = st.selectbox(
         "Choose chart type", 
         ["Histogram", "Boxplot", "Scatter"]
     )
-
-    # 3) render
+    
+    # 3) pick grouping
+    group_options = ["None"] + df_result["position_group"].unique().tolist()
+    group_by = st.selectbox("Group by (hue/category)", group_options)
+    
+    # 4) render
     if chart_type in ["Histogram", "Boxplot"]:
         for col in cols_to_plot:
             fig, ax = plt.subplots()
             if chart_type == "Histogram":
-                sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
-            else:
-                sns.boxplot(x=df_result[col], ax=ax)
-            ax.set_title(f"{chart_type} of {col}")
+                if group_by != "None":
+                    sns.histplot(
+                        data=df_result, x=col, hue=group_by,
+                        bins=30, kde=True, ax=ax, element="step", stat="density"
+                    )
+                else:
+                    sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
+            else:  # Boxplot
+                if group_by != "None":
+                    sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
+                else:
+                    sns.boxplot(y=df_result[col], ax=ax)
+            ax.set_title(f"{chart_type} of {col}" + (f" grouped by {group_by}" if group_by!="None" else ""))
             st.pyplot(fig)
-
+    
     elif chart_type == "Scatter":
-        # require exactly two columns for scatter
         if len(cols_to_plot) >= 2:
             x_col = st.selectbox("X-axis", cols_to_plot, index=0)
             y_col = st.selectbox("Y-axis", cols_to_plot, index=1)
             fig, ax = plt.subplots()
-            sns.scatterplot(data=df_result, x=x_col, y=y_col, ax=ax, alpha=0.6)
-            ax.set_title(f"Scatter: {y_col} vs {x_col}")
+            if group_by != "None":
+                sns.scatterplot(
+                    data=df_result, x=x_col, y=y_col,
+                    hue=group_by, palette="tab10", alpha=0.7, ax=ax
+                )
+            else:
+                sns.scatterplot(data=df_result, x=x_col, y=y_col, alpha=0.6, ax=ax)
+            ax.set_title(f"Scatter: {y_col} vs {x_col}" + (f" grouped by {group_by}" if group_by!="None" else ""))
             st.pyplot(fig)
         else:
             st.warning("Please select at least two columns for a scatter plot.")
