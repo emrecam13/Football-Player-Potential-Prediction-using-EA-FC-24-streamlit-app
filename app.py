@@ -188,7 +188,7 @@ if module == "Overview & Data Summary":
     # 3) Distributions of Key Numeric Features
     st.subheader("Distributions of Key Metrics")
     num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
-    fig, axes = plt.subplots(len(num_cols), 1, figsize=(8, 4*len(num_cols)))
+    fig, axes = plt.subplots(len(num_cols), 2, figsize=(8, 4*len(num_cols)))
     for ax, col in zip(axes, num_cols):
         sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
@@ -196,17 +196,17 @@ if module == "Overview & Data Summary":
 
     # 4) Count of Players by Position Group
     st.subheader("Players by Position Group")
-    st.bar_chart(df_model["position_group"].value_counts())
+    st.bar_chart(df_result["position_group"].value_counts())
 
     # 5) Average Overall vs Potential by Position
     st.subheader("Average Overall vs Potential by Position")
-    avg_stats = df_model.groupby("position_group")[["overall","potential"]].mean()
+    avg_stats = df_result.groupby("position_group")[["overall","potential"]].mean()
     st.dataframe(avg_stats)
     st.line_chart(avg_stats)
 
     # 6) Correlation Matrix
     st.subheader("Correlation Matrix (Numeric Features)")
-    corr = df_model[num_cols].corr()
+    corr = df_result[num_cols].corr()
     fig, ax = plt.subplots(figsize=(6,5))
     sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
     st.pyplot(fig)
