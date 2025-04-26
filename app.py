@@ -265,6 +265,28 @@ if module == "Overview & Data Summary":
         for col in cols_to_plot:
             fig, ax = plt.subplots()
             if chart_type == "Histogram":
+                for col in cols_to_plot:
+                fig, ax = plt.subplots()
+                if group_by != "None":
+                    sns.histplot(
+                        data=df_result,
+                        x=col,
+                        hue=group_by,
+                        multiple="stack",    # or "layer" / "dodge"
+                        bins=30,
+                        kde=True,
+                        ax=ax
+                    )
+                else:
+                    sns.histplot(
+                        data=df_result,
+                        x=col,
+                        bins=30,
+                        kde=True,
+                        ax=ax
+                    )
+                ax.set_title(f"Histogram of {col}" + (f" grouped by {group_by}" if group_by!="None" else ""))
+                st.pyplot(fig)
                 # hue not supported by histplot in older seaborn, so we skip grouping here
                 sns.histplot(df_result[col], bins=30, kde=True, ax=ax)
             else:
