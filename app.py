@@ -408,7 +408,7 @@ elif module == "Interactive Prediction":
                 f"Enter value for {attr}", 
                 min_value=16, 
                 max_value=40, 
-                value=25  # sensible default in the middle
+                value=20  # sensible default in the middle
             )
         else:
             # All other attributes between 0 and 99
@@ -416,7 +416,7 @@ elif module == "Interactive Prediction":
                 f"Enter value for {attr}", 
                 min_value=0, 
                 max_value=99, 
-                value=70
+                value=75
             )
 
     if st.button("Predict Potential"):
