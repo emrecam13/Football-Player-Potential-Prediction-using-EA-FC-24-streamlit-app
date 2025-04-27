@@ -208,8 +208,8 @@ if module == "Overview & Data Summary":
     st.subheader("🔹 Raw Data: Players by Position Group")
     st.bar_chart(df_result["position_group"].value_counts())
 
-    # 5) Predicted vs. Actual scatter (XGBoost)
-    st.subheader("🔸 Predicted vs. Actual Potential (XGBoost)")
+    # 5) Predicted vs. Actual scatter (LightGBM)
+    st.subheader("🔸 Predicted vs. Actual Potential (LightGBM)")
     fig, ax = plt.subplots(figsize=(6,6))
     ax.scatter(df_result["potential"], df_result["predicted_potential_LightGBM"], alpha=0.3)
     mn, mx = df_result["potential"].min(), df_result["potential"].max()
@@ -218,20 +218,20 @@ if module == "Overview & Data Summary":
     ax.set_ylabel("Predicted Potential")
     st.pyplot(fig)
 
-    # 6) Residual distribution (XGBoost)
-    st.subheader("🔸 Residuals Distribution (XGBoost)")
+    # 6) Residual distribution (LightGBM)
+    st.subheader("🔸 Residuals Distribution (LightGBM)")
     fig, ax = plt.subplots(figsize=(8,4))
-    sns.histplot(df_result["residuals_XGB"], kde=True, ax=ax)
+    sns.histplot(df_result["residuals_LightGBM"], kde=True, ax=ax)
     ax.set_xlabel("Residual (Actual − Predicted)")
-    ax.set_title("XGBoost Residuals")
+    ax.set_title("LightGBM Residuals")
     st.pyplot(fig)
 
     # 7) (Optional) compare mean & max errors by position
     agg = df_result.groupby("position_group").agg(
-        mean_resid=("residuals_XGB","mean"),
-        max_resid=("residuals_XGB", lambda x: x.abs().max())
+        mean_resid=("residuals_LightGBM","mean"),
+        max_resid=("residuals_LightGBM", lambda x: x.abs().max())
     )
-    st.subheader("🔸 XGBoost Residuals by Position Group")
+    st.subheader("🔸 LightGBM Residuals by Position Group")
     st.dataframe(agg)
 
     # 8) Custom, User-Driven Visualization (with grouping)
