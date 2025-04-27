@@ -317,7 +317,7 @@ elif module == "Model Evaluation":
 # 5. Build your own Plot
 # =======================
 
-elif module = "Build your own Plot":
+elif module == "Build your own Plot":
 
     st.markdown("### 📊 Build Your Own Plot")
     with st.form("plot_form"):
