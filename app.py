@@ -321,7 +321,8 @@ elif module == "Build Your Own Plot":
     st.title("📊 Build Your Own Plot")
     st.write("Use the form below to select your variables, then hit **Draw Plot**.")
 
-
+    # 1) Load the result DataFrame (only once, you can @st.cache as desired)
+    df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
 
     # 2) Build the form
     with st.form("custom_plot_form"):
