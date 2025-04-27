@@ -337,26 +337,39 @@ elif module == "Model Evaluation":
     st.title("Model Evaluation & Comparisons")
     st.write("Here you can compare cross-validated performance across models and positions.")
 
+
     # --- 1. Pre-defined CV Results ---
-    baseline = {
-        "Attacker": {"Linear Regression": {'rmse': 2.65, 'mae': 2.06, 'r2': 0.826}},
-        "Midfielder": {"Linear Regression": {'rmse': 2.60, 'mae': 2.02, 'r2': 0.831}},
-        "Defender": {"Linear Regression": {'rmse': 2.42, 'mae': 1.86, 'r2': 0.837}},
-        "Goalkeeper": {"Linear Regression": {'rmse': 2.61, 'mae': 2.01, 'r2': 0.837}},
+
+    # Baseline (Linear Regression) CV results (precomputed)
+    baseline_results = {
+        "Attacker":    {"Linear Regression": {'rmse': 2.64, 'mae': 2.05, 'r2': 0.826}},
+        "Midfielder":  {"Linear Regression": {'rmse': 2.59, 'mae': 2.02, 'r2': 0.831}},
+        "Defender":    {"Linear Regression": {'rmse': 2.42, 'mae': 1.86, 'r2': 0.837}},
+        "Goalkeeper":  {"Linear Regression": {'rmse': 2.57, 'mae': 1.99, 'r2': 0.841}}
     }
-    nonlin = {
-        "Attacker": {"LightGBM": {'rmse': 1.87,'mae': 1.17,'r2':0.913},
-                     "SVR":      {'rmse': 2.03,'mae': 1.44,'r2':0.898},
-                     "XGBoost":  {'rmse': 1.89,'mae': 1.18,'r2':0.912}},
-        "Midfielder": {"LightGBM": {'rmse':1.75,'mae':1.12,'r2':0.923},
-                       "SVR":      {'rmse':1.93,'mae':1.36,'r2':0.907},
-                       "XGBoost":  {'rmse':1.76,'mae':1.14,'r2':0.922}},
-        "Defender": {"LightGBM": {'rmse':1.66,'mae':1.06,'r2':0.923},
-                     "SVR":      {'rmse':1.79,'mae':1.25,'r2':0.910},
-                     "XGBoost":  {'rmse':1.67,'mae':1.08,'r2':0.922}},
-        "Goalkeeper": {"LightGBM": {'rmse':1.71,'mae':1.12,'r2':0.930},
-                       "SVR":      {'rmse':2.02,'mae':1.45,'r2':0.902},
-                       "XGBoost":  {'rmse':1.73,'mae':1.12,'r2':0.928}},
+    
+    # Non-linear models CV results with LightGBM, SVR, and XGBoost
+    results_nonlin = {
+        "Attacker": {
+            "LightGBM": {'rmse': 1.86, 'mae': 1.17, 'r2': 0.914},
+            "SVM":      {'rmse': 2.03, 'mae': 1.44, 'r2': 0.898},
+            "XGBoost":  {'rmse': 1.89, 'mae': 1.19, 'r2': 0.911}
+        },
+        "Midfielder": {
+            "LightGBM": {'rmse': 1.75, 'mae': 1.13, 'r2': 0.923},
+            "SVM":      {'rmse': 1.92, 'mae': 1.36, 'r2': 0.907},
+            "XGBoost":  {'rmse': 1.76, 'mae': 1.13, 'r2': 0.922}
+        },
+        "Defender": {
+            "LightGBM": {'rmse': 1.66, 'mae': 1.07, 'r2': 0.923},
+            "SVM":      {'rmse': 1.79, 'mae': 1.25, 'r2': 0.910},
+            "XGBoost":  {'rmse': 1.67, 'mae': 1.08, 'r2': 0.922}
+        },
+        "Goalkeeper": {
+            "LightGBM": {'rmse': 1.72, 'mae': 1.12, 'r2': 0.928},
+            "SVM":      {'rmse': 2.02, 'mae': 1.46, 'r2': 0.902},
+            "XGBoost":  {'rmse': 1.74, 'mae': 1.13, 'r2': 0.927}
+        }
     }
 
     # --- 2. Melt into a single DataFrame for easy plotting ---
