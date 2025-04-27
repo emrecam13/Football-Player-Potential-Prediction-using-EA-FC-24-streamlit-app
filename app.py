@@ -352,22 +352,22 @@ elif module == "Model Evaluation":
     results_nonlin = {
         "Attacker": {
             "LightGBM": {'rmse': 1.86, 'mae': 1.17, 'r2': 0.914},
-            "SVM":      {'rmse': 2.03, 'mae': 1.44, 'r2': 0.898},
+            "SVR":      {'rmse': 2.03, 'mae': 1.44, 'r2': 0.898},
             "XGBoost":  {'rmse': 1.89, 'mae': 1.19, 'r2': 0.911}
         },
         "Midfielder": {
             "LightGBM": {'rmse': 1.75, 'mae': 1.13, 'r2': 0.923},
-            "SVM":      {'rmse': 1.92, 'mae': 1.36, 'r2': 0.907},
+            "SVR":      {'rmse': 1.92, 'mae': 1.36, 'r2': 0.907},
             "XGBoost":  {'rmse': 1.76, 'mae': 1.13, 'r2': 0.922}
         },
         "Defender": {
             "LightGBM": {'rmse': 1.66, 'mae': 1.07, 'r2': 0.923},
-            "SVM":      {'rmse': 1.79, 'mae': 1.25, 'r2': 0.910},
+            "SVR":      {'rmse': 1.79, 'mae': 1.25, 'r2': 0.910},
             "XGBoost":  {'rmse': 1.67, 'mae': 1.08, 'r2': 0.922}
         },
         "Goalkeeper": {
             "LightGBM": {'rmse': 1.72, 'mae': 1.12, 'r2': 0.928},
-            "SVM":      {'rmse': 2.02, 'mae': 1.46, 'r2': 0.902},
+            "SVR":      {'rmse': 2.02, 'mae': 1.46, 'r2': 0.902},
             "XGBoost":  {'rmse': 1.74, 'mae': 1.13, 'r2': 0.927}
         }
     }
