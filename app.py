@@ -256,7 +256,7 @@ if module == "Overview & Data Summary":
     #    We allow "None" plus any object/category dtype in df_result
     cat_cols = df_result.select_dtypes(include=["object", "category"]).columns.tolist()
     group_by = st.selectbox(
-        "Group by (add color categories)?", 
+        "Group by (add color categories)", 
         options=["None"] + cat_cols
     )
     
