@@ -365,7 +365,7 @@ elif module == "Build Your Own Plot":
             "Select chart type",
             ["Histogram", "Boxplot", "Scatter"]
         )
-        cat_cols = df_result.select_dtypes(include=["object","category"]).columns.tolist()
+        cat_cols = df_result[["position_group", "preferred_foot"]].columns.tolist()
         group_by = st.selectbox(
             "Group by (optional)",
             options=["None"] + cat_cols
