@@ -211,7 +211,7 @@ if module == "Overview & Data Summary":
     # 5) Predicted vs. Actual scatter (XGBoost)
     st.subheader("🔸 Predicted vs. Actual Potential (XGBoost)")
     fig, ax = plt.subplots(figsize=(6,6))
-    ax.scatter(df_result["potential"], df_result["predicted_potential_XGBoost"], alpha=0.3)
+    ax.scatter(df_result["potential"], df_result["predicted_potential_LightGBM"], alpha=0.3)
     mn, mx = df_result["potential"].min(), df_result["potential"].max()
     ax.plot([mn,mx],[mn,mx],"r--", linewidth=2)
     ax.set_xlabel("Actual Potential")
@@ -243,7 +243,7 @@ if module == "Overview & Data Summary":
     cols_to_plot = st.multiselect(
         "Select one or more numeric columns to visualize", 
         options=numeric_cols,
-        default=["predicted_potential_XGBoost"]
+        default=["predicted_potential_LightGBM"]
     )
     
     # 2) pick chart type
