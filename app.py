@@ -576,4 +576,4 @@ elif module == "About":
 # ============================
 # Additional info
 # ============================
-st.sidebar("Developed by Emre Çam for the MSc Data Science & AI dissertation at Bournemouth University.")
+st.sidebar.info("Developed by Emre Çam for the MSc Data Science & AI dissertation at Bournemouth University.")
