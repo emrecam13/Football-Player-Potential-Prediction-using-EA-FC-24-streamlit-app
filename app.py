@@ -379,11 +379,11 @@ elif module == "Model Evaluation":
     for pos in positions:
         # non-linear first
         for m in ["LightGBM","SVR","XGBoost"]:
-            rec = nonlin[pos][m].copy()
+            rec = results_nonlin[pos][m].copy()
             rec.update({"Position":pos, "Model":m})
             records.append(rec)
         # baseline last
-        rec = baseline[pos]["Linear Regression"].copy()
+        rec = baseline_results[pos]["Linear Regression"].copy()
         rec.update({"Position":pos, "Model":"Linear Regression"})
         records.append(rec)
 
