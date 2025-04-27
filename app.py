@@ -317,7 +317,7 @@ elif module == "Model Evaluation":
 
     
     # --- 3. Bar-Charts for each metric ---
-    fig, axes = plt.subplots(1,3, figsize=(25,5))
+    fig, axes = plt.subplots(1,3, figsize=(18,5))
     sns.barplot(data=df_eval, x="Position", y="rmse", hue="Model", ax=axes[0])
     axes[0].set_title("RMSE by Position & Model")
     sns.barplot(data=df_eval, x="Position", y="mae", hue="Model", ax=axes[1])
@@ -472,15 +472,46 @@ elif module == "Interactive Prediction":
 elif module == "About":
     st.title("About the Player Potential Prediction App")
     st.write("""
-    This app is designed to predict the potential of football players using various machine learning models.
-
-    **Modules:**
-    - **Overview & Data Summary:** Displays a summary and basic statistics of the dataset.
-    - **Model Evaluation & Comparisons:** Shows precomputed evaluation metrics (RMSE, MAE, R²) for each model per position group.
-    - **Interactive Prediction:** Allows you to select a position and model, input the corresponding 11 attributes, and get a predicted potential.
-    - **About:** Provides details about the app, dataset, and model methodology.
+    This app predicts football players’ future potential using four position-specific models:
+    
+    - **Linear Regression**  
+    - **LightGBM**  
+    - **SVR**  
+    - **XGBoost**  
+    
+    It is organized into five modules:
+    1. **Overview & Data Summary**  
+       Explore the raw dataset and basic summary statistics.  
+    2. **Model Evaluation**  
+       Compare CV metrics (RMSE, MAE, R²) across models and positions.  
+    3. **Interactive Prediction**  
+       Enter a player’s 11 attributes and get a potential score.  
+    4. **Build Your Own Plot**  
+       Customize charts (Histogram, Boxplot, Scatter) on any numeric column.  
+    5. **About**  
+       You’re here!
     """)
-    st.write("Contact: emrecam13@gmail.com")
+
+    st.subheader("📋 Guidelines")
+    st.markdown("""
+    - **Navigation:** Use the sidebar to switch modules.  
+    - **Input Ranges (Interactive Prediction):**  
+      - **Age:** 16–40  
+      - **Other attributes:** 0–99  
+    - **Model Selection:**  
+      - Tree-based models (LightGBM, XGBoost) generally outperform SVR and Linear Regression.  
+      - Use **Overview** or **Model Evaluation** to see which model suits your needs.  
+    - **Build Your Own Plot:**  
+      1. Select one or more numeric columns.  
+      2. Choose a chart type.  
+      3. (Optional) Group by position or model.  
+      4. Click **Draw Plot** to render—this prevents reruns on every widget change.  
+    - **Performance Tip:**  
+      - Data loading is cached—switching modules won’t re-read the dataset.  
+      - Use **Build Your Own Plot** for quick, custom visualizations without re-running the whole summary.  
+    """)
+
+    st.write("**Contact:** emrecam13@gmail.com")
 
 # ============================
 # Deployment Instruction (Optional)
