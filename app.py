@@ -504,42 +504,73 @@ elif module == "About":
     - **Build Your Own Plot:**  
       1. Select one or more numeric columns.  
       2. Choose a chart type.  
-      3. (Optional) Group by position or model.  
+      3. (Optional) Group by position groups or preffered foot.  
       4. Click **Draw Plot** to render—this prevents reruns on every widget change.  
     - **Performance Tip:**  
       - Data loading is cached—switching modules won’t re-read the dataset.  
       - Use **Build Your Own Plot** for quick, custom visualizations without re-running the whole summary.  
     """)
-
     st.subheader("🔍 Feature Guide")
     st.markdown("""
-    | Feature                     | Description                                                        |
-    |-----------------------------|--------------------------------------------------------------------|
-    | **overall**                 | Current overall rating of the player (0–99)                       |
-    | **age**                     | Player’s age in years                                             |
-    | **skill_ball_control**      | Ability to control the ball under pressure                        |
-    | **skill_dribbling**         | Skill and flair when dribbling past opponents                     |
-    | **attacking_short_passing** | Accuracy of short passes in attacking situations                  |
-    | **attacking_finishing**     | Ability to finish scoring opportunities                           |
-    | **mentality_positioning**   | Off-the-ball positioning sense in attacking phases                |
-    | **movement_reactions**      | Reaction speed to loose balls and sudden play changes             |
-    | **power_shot_power**        | Force behind shots on goal                                        |
-    | **power_long_shots**        | Ability to strike accurately from distance                        |
-    | **mentality_vision**        | Ability to see and execute key passes                             |
-    | **skill_long_passing**      | Accuracy of long-range passing                                   |
-    | **mentality_composure**     | Calmness and control under pressure                               |
-    | **defending_standing_tackle** | Ability to make standing tackles                                |
-    | **defending_sliding_tackle**  | Ability to execute sliding tackles                             |
-    | **mentality_interceptions**   | Reading the game to intercept passes                            |
-    | **defending_marking_awareness** | Awareness when marking opponents                            |
-    | **attacking_heading_accuracy** | Accuracy when heading the ball in attacking play               |
-    | **goalkeeping_diving**       | Agility and technique when diving                                 |
-    | **goalkeeping_handling**     | Ability to catch and hold the ball securely                       |
-    | **goalkeeping_kicking**      | Distance and accuracy of goal kicks                              |
-    | **goalkeeping_positioning**  | Positioning and anticipation in goal                              |
-    | **goalkeeping_reflexes**     | Reaction speed to shots and close-range saves                     |
-    | **goalkeeping_speed**        | Quickness in covering ground as a goalkeeper                     |
+    | Feature                               | Description                                                         |
+    |---------------------------------------|---------------------------------------------------------------------|
+    | **short_name**                        | Player’s commonly used name                                        |
+    | **long_name**                         | Player’s full official name                                        |
+    | **player_positions**                  | List of positions the player can play                              |
+    | **overall**                           | Current overall rating (0–99)                                      |
+    | **potential**                         | Projected future potential rating (0–99)                           |
+    | **age**                               | Player’s age in years                                              |
+    | **height_cm**                         | Player’s height in centimeters                                     |
+    | **weight_kg**                         | Player’s weight in kilograms                                       |
+    | **nationality_name**                  | Country of the player’s nationality                                |
+    | **preferred_foot**                    | Preferred kicking foot (Left or Right)                             |
+    | **weak_foot**                         | Ability with the non-preferred foot (1–5)                          |
+    | **skill_moves**                       | Skill moves proficiency (1–5)                                      |
+    | **international_reputation**          | International reputation level (1–5)                               |
+    | **work_rate**                         | Attacking/defensive work rate (e.g., High/Medium)                  |
+    | **attacking_crossing**                | Ability to deliver accurate crosses                                |
+    | **attacking_finishing**               | Skill in finishing scoring opportunities                           |
+    | **attacking_heading_accuracy**        | Accuracy when heading the ball                                     |
+    | **attacking_short_passing**           | Accuracy of short passes                                           |
+    | **attacking_volleys**                 | Ability to strike volleys accurately                               |
+    | **skill_dribbling**                   | Ability to dribble past opponents                                  |
+    | **skill_curve**                       | Ability to curl the ball on shots or passes                        |
+    | **skill_fk_accuracy**                 | Accuracy of free kicks                                             |
+    | **skill_long_passing**                | Accuracy of long-range passes                                      |
+    | **skill_ball_control**                | Control of the ball under pressure                                 |
+    | **movement_acceleration**             | Speed at which player reaches top speed                            |
+    | **movement_sprint_speed**             | Top sprinting speed                                                |
+    | **movement_agility**                  | Ability to change direction quickly                                |
+    | **movement_reactions**                | Speed of reacting to loose balls                                   |
+    | **movement_balance**                  | Stability under physical challenges                                |
+    | **power_shot_power**                  | Power behind shots                                                 |
+    | **power_jumping**                     | Jumping ability and aerial reach                                   |
+    | **power_stamina**                     | Endurance over the duration of a match                             |
+    | **power_strength**                    | Physical strength in challenges                                    |
+    | **power_long_shots**                  | Accuracy and power of long-distance shots                          |
+    | **mentality_aggression**              | Aggressiveness in duels and challenges                             |
+    | **mentality_interceptions**           | Ability to anticipate and intercept passes                         |
+    | **mentality_positioning**             | Positional sense off the ball                                      |
+    | **mentality_vision**                  | Ability to see and execute key passes                              |
+    | **mentality_penalties**               | Penalty-taking skill                                              |
+    | **mentality_composure**               | Calmness under pressure                                            |
+    | **defending_marking_awareness**       | Awareness when marking opponents                                   |
+    | **defending_standing_tackle**         | Ability to perform standing tackles                                |
+    | **defending_sliding_tackle**          | Ability to perform sliding tackles                                 |
+    | **goalkeeping_diving**                | Agility and technique in diving saves                              |
+    | **goalkeeping_handling**              | Ability to catch and hold the ball securely                         |
+    | **goalkeeping_kicking**               | Distance and accuracy of goal kicks                                 |
+    | **goalkeeping_positioning**           | Positioning and anticipation in goal                               |
+    | **goalkeeping_reflexes**              | Reaction speed to shots near goal                                   |
+    | **goalkeeping_speed**                 | Speed when coming off the line or covering ground                  |
+    | **position_group**                    | Position category used for modeling                                |
+    | **predicted_potential_Linear_Regression** | Potential predicted by Linear Regression                       |
+    | **predicted_potential_SVR**           | Potential predicted by SVR                                         |
+    | **predicted_potential_XGBoost**       | Potential predicted by XGBoost                                     |
+    | **predicted_potential_LightGBM**      | Potential predicted by LightGBM                                    |
+    | **residuals_LightGBM**                | Difference between actual and LightGBM prediction                  |
     """)
+
     st.write("**Contact:** emrecam13@gmail.com")
 
 # ============================
