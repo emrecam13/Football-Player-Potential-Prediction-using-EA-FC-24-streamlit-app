@@ -244,7 +244,7 @@ if module == "Overview & Data Summary":
 # =============================
 elif module == "Model Evaluation":
     st.title("Model Evaluation & Comparisons")
-    st.write("## **Attacker Group**
+    st.write("**Attacker Group**
 **Linear Regression**: RMSE = 2.64, MAE = 2.05, R² = 0.826
 
 **LightGBM**: RMSE = 1.86, MAE = 1.17, R² = 0.914
