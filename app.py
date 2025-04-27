@@ -315,19 +315,6 @@ elif module == "Model Evaluation":
     st.write("""
     **Analysis**: With the lowest RMSE (1.72), lowest MAE (1.12), and highest R² (0.928), **LightGBM** slightly outperforms XGBoost (RMSE 1.74, MAE 1.13, R² 0.927).""")
 
-    st.subheader("Overall Conclusion", divider=True)
-    st.write("""
-    Based on the comparison:
-
-    **LightGBM** is the best performing model for all position groups, as it consistently delivers the best balance of accuracy (lowest RMSE/MAE) and explanatory power (highest R²).
-    
-    **XGBoost** is very close, but in every case, **LightGBM** edges out slightly.
-    
-    **SVR** performs better than the baseline **Linear Regression** but is outperformed by the tree-based ensemble methods.
-    
-    Thus, for this dataset and the given evaluation, **LightGBM** appears to be the best model across *Attacker*, *Midfielder*, *Defender*, and *Goalkeeper* groups.""")
-
-
     
     # --- 3. Bar-Charts for each metric ---
     fig, axes = plt.subplots(1,3, figsize=(18,5))
@@ -340,6 +327,19 @@ elif module == "Model Evaluation":
     for ax in axes:
         ax.legend(loc="upper right")
     st.pyplot(fig)
+
+
+    st.subheader("Overall Conclusion", divider=True)
+    st.write("""
+    Based on the comparison:
+
+    **LightGBM** is the best performing model for all position groups, as it consistently delivers the best balance of accuracy (lowest RMSE/MAE) and explanatory power (highest R²).
+    
+    **XGBoost** is very close, but in every case, **LightGBM** edges out slightly.
+    
+    **SVR** performs better than the baseline **Linear Regression** but is outperformed by the tree-based ensemble methods.
+    
+    Thus, for this dataset and the given evaluation, **LightGBM** appears to be the best model across *Attacker*, *Midfielder*, *Defender*, and *Goalkeeper* groups.""")
 
 
 # =======================
