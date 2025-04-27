@@ -574,9 +574,6 @@ elif module == "About":
     st.write("**Contact:** emrecam13@gmail.com")
 
 # ============================
-# Deployment Instruction (Optional)
+# Additional info
 # ============================
-st.sidebar.markdown("### Additional info")
-st.sidebar.info("""
-info
-""")
+st.sidebar.caption("Developed by Emre Çam for the MSc Data Science & AI dissertation at Bournemouth University.")
