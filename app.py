@@ -197,7 +197,7 @@ if module == "Overview & Data Summary":
     st.subheader("🔹 Distributions of Raw Numeric Features")
     raw_num_cols = ["age","height_cm","weight_kg","overall","potential"]
     fig, axes = plt.subplots(len(raw_num_cols),1,figsize=(8,4*len(raw_num_cols)))
-    fig.subplots_adjust(hspace=1)
+    fig.subplots_adjust(hspace=0.3)
     for ax,col in zip(axes, raw_num_cols):
         sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
