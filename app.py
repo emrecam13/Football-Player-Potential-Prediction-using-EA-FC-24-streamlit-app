@@ -244,18 +244,6 @@ if module == "Overview & Data Summary":
 # =============================
 elif module == "Model Evaluation":
     st.title("Model Evaluation & Comparisons")
-    st.subheader("Attacker Group", divider=True)
-    st.write("""
-    **Linear Regression**: RMSE = 2.64, MAE = 2.05, R² = 0.826
-    
-    **LightGBM**: RMSE = 1.86, MAE = 1.17, R² = 0.914
-    
-    **SVR**: RMSE = 2.03, MAE = 1.44, R² = 0.898
-    
-    **XGBoost**: RMSE = 1.89, MAE = 1.19, R² = 0.911
-    
-    **Analysis**: **LightGBM** achieves the lowest RMSE (1.86) and MAE (1.17), and the highest R² (0.914), outperforming XGBoost (RMSE 1.89, MAE 1.19, R² 0.911), SVR, and Linear Regression.""")
-
 
     # --- 1. Pre-defined CV Results ---
 
@@ -311,6 +299,36 @@ elif module == "Model Evaluation":
     st.subheader("Summary Table")
     st.dataframe(df_eval.set_index(["Position","Model"]))
 
+    st.subheader("Attacker Group", divider=True)
+    st.write("""
+    **Analysis**: **LightGBM** achieves the lowest RMSE (1.86) and MAE (1.17), and the highest R² (0.914), outperforming XGBoost (RMSE 1.89, MAE 1.19, R² 0.911), SVR, and Linear Regression.""")
+
+    st.subheader("Midfielder Group", divider=True)
+    st.write("""
+    **Analysis**: **LightGBM** again leads with the lowest RMSE (1.75) and ties for the lowest MAE (1.13), while also posting the highest R² (0.923), just edging out XGBoost’s RMSE of 1.76 and R² of 0.922.""")
+
+    st.subheader("Defender Group", divider=True)
+    st.write("""
+    **Analysis**: **LightGBM** posts the top metrics (RMSE 1.66, MAE 1.07, R² 0.923), narrowly beating XGBoost (RMSE 1.67, MAE 1.08, R² 0.922) and clearly outperforming SVR and Linear Regression.""")
+
+    st.subheader("Goalkeeper Group", divider=True)
+    st.write("""
+    **Analysis**: With the lowest RMSE (1.72), lowest MAE (1.12), and highest R² (0.928), **LightGBM** slightly outperforms XGBoost (RMSE 1.74, MAE 1.13, R² 0.927).""")
+
+    st.subheader("Overall Conclusion", divider=True)
+    st.write("""
+    Based on the comparison:
+
+    **LightGBM** is the best performing model for all position groups, as it consistently delivers the best balance of accuracy (lowest RMSE/MAE) and explanatory power (highest R²).
+    
+    **XGBoost** is very close, but in every case, **LightGBM** edges out slightly.
+    
+    **SVR** performs better than the baseline **Linear Regression** but is outperformed by the tree-based ensemble methods.
+    
+    Thus, for this dataset and the given evaluation, **LightGBM** appears to be the best model across *Attacker*, *Midfielder*, *Defender*, and *Goalkeeper* groups.""")
+
+
+    
     # --- 3. Bar-Charts for each metric ---
     fig, axes = plt.subplots(1,3, figsize=(18,5))
     sns.barplot(data=df_eval, x="Position", y="rmse", hue="Model", ax=axes[0])
