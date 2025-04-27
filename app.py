@@ -5,14 +5,6 @@ import os
 import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
-os.environ["LANG"]   = "en_US.UTF-8"
-os.environ["LC_ALL"] = "en_US.UTF-8"
-
-import locale
-try:
-    locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
-except locale.Error:
-    pass  # fallback if the locale isn’t installed
 
 # ============================
 # 1. Configuration and Setup
