@@ -176,7 +176,7 @@ module = st.sidebar.selectbox("Select Module",
 if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
-    st.write("Below you’ll see first the _raw_ dataset that you prepared, then—separately—the model results you generated.")
+    st.write("Below you’ll see first 5 rows of the _raw_ dataset.")
 
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -205,8 +205,8 @@ if module == "Overview & Data Summary":
     # 4) Now load your results (predictions + residuals)
     df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
     st.subheader("🔸 Result Sample (Model Outputs)")
+    st.write("Below you’ll see first 5 rows of the _Result_ dataset.")
     st.dataframe(df_result.head())
-    
     
     # 3b) Position counts in the result data
     st.subheader("🔹 Raw Data: Players by Position Group")
