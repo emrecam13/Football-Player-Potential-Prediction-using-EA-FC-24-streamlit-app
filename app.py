@@ -472,7 +472,7 @@ elif module == "Interactive Prediction":
 elif module == "About":
     st.title("About the Player Potential Prediction App")
     st.write("""
-    This app predicts football players’ future potential using four position-specific models:
+    This app predicts football players’ future potential using four machine learning models:
     
     - **Linear Regression**  
     - **LightGBM**  
@@ -511,6 +511,35 @@ elif module == "About":
       - Use **Build Your Own Plot** for quick, custom visualizations without re-running the whole summary.  
     """)
 
+    st.subheader("🔍 Feature Guide")
+    st.markdown("""
+    | Feature                     | Description                                                        |
+    |-----------------------------|--------------------------------------------------------------------|
+    | **overall**                 | Current overall rating of the player (0–99)                       |
+    | **age**                     | Player’s age in years                                             |
+    | **skill_ball_control**      | Ability to control the ball under pressure                        |
+    | **skill_dribbling**         | Skill and flair when dribbling past opponents                     |
+    | **attacking_short_passing** | Accuracy of short passes in attacking situations                  |
+    | **attacking_finishing**     | Ability to finish scoring opportunities                           |
+    | **mentality_positioning**   | Off-the-ball positioning sense in attacking phases                |
+    | **movement_reactions**      | Reaction speed to loose balls and sudden play changes             |
+    | **power_shot_power**        | Force behind shots on goal                                        |
+    | **power_long_shots**        | Ability to strike accurately from distance                        |
+    | **mentality_vision**        | Ability to see and execute key passes                             |
+    | **skill_long_passing**      | Accuracy of long-range passing                                   |
+    | **mentality_composure**     | Calmness and control under pressure                               |
+    | **defending_standing_tackle** | Ability to make standing tackles                                |
+    | **defending_sliding_tackle**  | Ability to execute sliding tackles                             |
+    | **mentality_interceptions**   | Reading the game to intercept passes                            |
+    | **defending_marking_awareness** | Awareness when marking opponents                            |
+    | **attacking_heading_accuracy** | Accuracy when heading the ball in attacking play               |
+    | **goalkeeping_diving**       | Agility and technique when diving                                 |
+    | **goalkeeping_handling**     | Ability to catch and hold the ball securely                       |
+    | **goalkeeping_kicking**      | Distance and accuracy of goal kicks                              |
+    | **goalkeeping_positioning**  | Positioning and anticipation in goal                              |
+    | **goalkeeping_reflexes**     | Reaction speed to shots and close-range saves                     |
+    | **goalkeeping_speed**        | Quickness in covering ground as a goalkeeper                     |
+    """)
     st.write("**Contact:** emrecam13@gmail.com")
 
 # ============================
