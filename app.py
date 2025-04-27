@@ -395,7 +395,7 @@ elif module == "Interactive Prediction":
     position = st.selectbox("Select Position", ["Attacker", "Midfielder", "Defender", "Goalkeeper"])
 
     # Allow the user to select a model (Random Forest replaced with LightGBM)
-    model_choice = st.selectbox("Select Model", ["Linear Regression", "LightGBM", "SVR", "XGBoost"])
+    model_choice = st.selectbox("Select Model", ["LightGBM", "Linear Regression", "SVR", "XGBoost"])
 
     st.subheader(f"Input values for the {position} attributes:")
     attributes = selected_features[position]
