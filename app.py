@@ -317,7 +317,7 @@ elif module == "Model Evaluation":
 
     
     # --- 3. Bar-Charts for each metric ---
-    fig, axes = plt.subplots(1,3, figsize=(18,5))
+    fig, axes = plt.subplots(1,3, figsize=(25,5))
     sns.barplot(data=df_eval, x="Position", y="rmse", hue="Model", ax=axes[0])
     axes[0].set_title("RMSE by Position & Model")
     sns.barplot(data=df_eval, x="Position", y="mae", hue="Model", ax=axes[1])
