@@ -244,16 +244,17 @@ if module == "Overview & Data Summary":
 # =============================
 elif module == "Model Evaluation":
     st.title("Model Evaluation & Comparisons")
-    st.write("**Attacker Group**
-**Linear Regression**: RMSE = 2.64, MAE = 2.05, R² = 0.826
-
-**LightGBM**: RMSE = 1.86, MAE = 1.17, R² = 0.914
-
-**SVR**: RMSE = 2.03, MAE = 1.44, R² = 0.898
-
-**XGBoost**: RMSE = 1.89, MAE = 1.19, R² = 0.911
-
-**Analysis**: **LightGBM** achieves the lowest RMSE (1.86) and MAE (1.17), and the highest R² (0.914), outperforming XGBoost (RMSE 1.89, MAE 1.19, R² 0.911), SVR, and Linear Regression.")
+    st.write("""
+    **Attacker Group**
+    **Linear Regression**: RMSE = 2.64, MAE = 2.05, R² = 0.826
+    
+    **LightGBM**: RMSE = 1.86, MAE = 1.17, R² = 0.914
+    
+    **SVR**: RMSE = 2.03, MAE = 1.44, R² = 0.898
+    
+    **XGBoost**: RMSE = 1.89, MAE = 1.19, R² = 0.911
+    
+    **Analysis**: **LightGBM** achieves the lowest RMSE (1.86) and MAE (1.17), and the highest R² (0.914), outperforming XGBoost (RMSE 1.89, MAE 1.19, R² 0.911), SVR, and Linear Regression.""")
 
 
     # --- 1. Pre-defined CV Results ---
