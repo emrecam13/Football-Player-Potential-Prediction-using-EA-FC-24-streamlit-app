@@ -317,48 +317,54 @@ elif module == "Model Evaluation":
 # 5. Build your own Plot
 # =======================
 
-elif module == "Build your own Plot":
-   
+elif module == "Build Your Own Plot":
     st.title("📊 Build Your Own Plot")
-    # (optionally cache df_result at top of file with @st.cache_data)
-    
+    st.write("Use the form below to select your variables, then hit **Draw Plot**.")
+
+
+
+    # 2) Build the form
     with st.form("custom_plot_form"):
-        numeric_cols = df_result.select_dtypes("number").columns.tolist()
-        cols_to_plot = st.multiselect("Numeric columns", numeric_cols, default=[numeric_cols[0]])
-        chart_type   = st.selectbox("Chart type", ["Histogram","Boxplot","Scatter"])
-        cat_cols     = df_result.select_dtypes(["object","category"]).columns.tolist()
-        group_by     = st.selectbox("Group by", ["None"] + cat_cols)
-        draw         = st.form_submit_button("Draw Plot")
-  
+        numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
+        cols_to_plot = st.multiselect(
+            "Select numeric columns to visualize",
+            options=numeric_cols,
+            default=[numeric_cols[0]] if numeric_cols else []
+        )
+        chart_type = st.selectbox(
+            "Select chart type",
+            ["Histogram", "Boxplot", "Scatter"]
+        )
+        cat_cols = df_result.select_dtypes(include=["object","category"]).columns.tolist()
+        group_by = st.selectbox(
+            "Group by (optional)",
+            options=["None"] + cat_cols
+        )
+
+        draw = st.form_submit_button("Draw Plot")
+
+    # 3) Only render when user clicks
     if draw:
-        # Histogram or Boxplot
         if chart_type in ["Histogram", "Boxplot"]:
             for col in cols_to_plot:
                 fig, ax = plt.subplots()
                 if chart_type == "Histogram":
                     if group_by != "None":
-                        sns.histplot(
-                            data=df_result, x=col, hue=group_by,
-                            multiple="dodge", bins=30, kde=True, ax=ax
-                        )
+                        sns.histplot(data=df_result, x=col, hue=group_by,
+                                     multiple="dodge", bins=30, kde=True, ax=ax)
                         ax.set_title(f"Histogram of {col} (grouped by {group_by})")
                     else:
-                        sns.histplot(
-                            data=df_result, x=col, bins=30, kde=True, ax=ax
-                        )
+                        sns.histplot(data=df_result, x=col, bins=30, kde=True, ax=ax)
                         ax.set_title(f"Histogram of {col}")
                 else:  # Boxplot
                     if group_by != "None":
-                        sns.boxplot(
-                            x=group_by, y=col, data=df_result, ax=ax
-                        )
+                        sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
                         ax.set_title(f"Boxplot of {col} by {group_by}")
                     else:
                         sns.boxplot(y=df_result[col], ax=ax)
                         ax.set_title(f"Boxplot of {col}")
                 st.pyplot(fig)
-    
-        # Scatter plot
+
         elif chart_type == "Scatter":
             if len(cols_to_plot) < 2:
                 st.warning("Please select at least two columns for a scatter plot.")
@@ -366,20 +372,15 @@ elif module == "Build your own Plot":
                 x_col, y_col = cols_to_plot[:2]
                 fig, ax = plt.subplots()
                 if group_by != "None":
-                    sns.scatterplot(
-                        data=df_result, x=x_col, y=y_col,
-                        hue=group_by, alpha=0.7, ax=ax
-                    )
+                    sns.scatterplot(data=df_result, x=x_col, y=y_col,
+                                    hue=group_by, alpha=0.7, ax=ax)
                     ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
                 else:
-                    sns.scatterplot(
-                        data=df_result, x=x_col, y=y_col,
-                        alpha=0.6, ax=ax
-                    )
+                    sns.scatterplot(data=df_result, x=x_col, y=y_col,
+                                    alpha=0.6, ax=ax)
                 ax.set_title(f"Scatter: {y_col} vs {x_col}"
                              + (f" grouped by {group_by}" if group_by!="None" else ""))
                 st.pyplot(fig)
-
 
 
 # ============================
