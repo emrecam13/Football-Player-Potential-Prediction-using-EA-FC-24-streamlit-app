@@ -164,7 +164,11 @@ goalkeeper_models = {
 # ============================
 st.sidebar.title("Navigation")
 module = st.sidebar.selectbox("Select Module",
-                              ["Overview & Data Summary", "Model Evaluation", "Interactive Prediction", "About"])
+                              ["Overview & Data Summary",
+                               "Model Evaluation",
+                               "Interactive Prediction",
+                               "Build Your Own Plot",
+                               "About"])
 
 # =============================
 # 3. Overview & Data Summary Module
@@ -233,70 +237,6 @@ if module == "Overview & Data Summary":
     )
     st.subheader("🔸 LightGBM Residuals by Position Group")
     st.dataframe(agg)
-
-    # 8) Custom, User-Driven Visualization (with grouping)
-    # ——————————————————————————————
-    st.markdown("### 📊 Build Your Own Plot")
-    with st.form("plot_form"):
-        # 1) pick numeric columns
-        numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
-        cols_to_plot = st.multiselect(
-            "Select one or more numeric columns to visualize", 
-            options=numeric_cols,
-            default=["predicted_potential_LightGBM"]
-        )
-    
-        # 2) pick chart type
-        chart_type = st.selectbox(
-            "Choose chart type", 
-            ["Histogram", "Boxplot", "Scatter"]
-        )
-    
-        # 3) pick a grouping column (hue)
-        cat_cols = df_result.select_dtypes(include=["object", "category"]).columns.tolist()
-        group_by = st.selectbox(
-            "Group by (add color categories)", 
-            options=["None"] + cat_cols
-        )
-    
-        # this creates a “Draw Plot” button and pauses here until pressed
-        draw = st.form_submit_button("Draw Plot")
-    
-    if draw:
-        # 4) render only once, after button press
-        if chart_type in ["Histogram", "Boxplot"]:
-            for col in cols_to_plot:
-                fig, ax = plt.subplots()
-                if chart_type == "Histogram":
-                    if group_by != "None":
-                        sns.histplot(data=df_result, x=col, hue=group_by, multiple="dodge", bins=30, kde=True, ax=ax)
-                        ax.set_title(f"Histogram of {col} (grouped by {group_by})")
-                    else:
-                        sns.histplot(data=df_result, x=col, bins=30, kde=True, ax=ax)
-                        ax.set_title(f"Histogram of {col}")
-                else:  # Boxplot
-                    if group_by != "None":
-                        sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
-                        ax.set_title(f"Boxplot of {col} by {group_by}")
-                    else:
-                        sns.boxplot(y=df_result[col], ax=ax)
-                        ax.set_title(f"Boxplot of {col}")
-                st.pyplot(fig)
-    
-        elif chart_type == "Scatter":
-            if len(cols_to_plot) < 2:
-                st.warning("Please select at least two columns for a scatter plot.")
-            else:
-                x_col = cols_to_plot[0]
-                y_col = cols_to_plot[1]
-                fig, ax = plt.subplots()
-                if group_by != "None":
-                    sns.scatterplot(data=df_result, x=x_col, y=y_col, hue=group_by, alpha=0.7, ax=ax)
-                    ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
-                else:
-                    sns.scatterplot(data=df_result, x=x_col, y=y_col, alpha=0.6, ax=ax)
-                ax.set_title(f"Scatter: {y_col} vs {x_col}")
-                st.pyplot(fig)
 
 # =============================
 # 4. Model Evaluation Module
@@ -372,8 +312,77 @@ elif module == "Model Evaluation":
         ax.legend(loc="upper right")
     st.pyplot(fig)
 
+
+# =======================
+# 5. Build your own Plot
+# =======================
+
+elif module = "Build your own Plot":
+
+    st.markdown("### 📊 Build Your Own Plot")
+    with st.form("plot_form"):
+        # 1) pick numeric columns
+        numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
+        cols_to_plot = st.multiselect(
+            "Select one or more numeric columns to visualize", 
+            options=numeric_cols,
+            default=["predicted_potential_LightGBM"]
+        )
+    
+        # 2) pick chart type
+        chart_type = st.selectbox(
+            "Choose chart type", 
+            ["Histogram", "Boxplot", "Scatter"]
+        )
+    
+        # 3) pick a grouping column (hue)
+        cat_cols = df_result.select_dtypes(include=["object", "category"]).columns.tolist()
+        group_by = st.selectbox(
+            "Group by (add color categories)", 
+            options=["None"] + cat_cols
+        )
+    
+        # this creates a “Draw Plot” button and pauses here until pressed
+        draw = st.form_submit_button("Draw Plot")
+    
+    if draw:
+        # 4) render only once, after button press
+        if chart_type in ["Histogram", "Boxplot"]:
+            for col in cols_to_plot:
+                fig, ax = plt.subplots()
+                if chart_type == "Histogram":
+                    if group_by != "None":
+                        sns.histplot(data=df_result, x=col, hue=group_by, multiple="dodge", bins=30, kde=True, ax=ax)
+                        ax.set_title(f"Histogram of {col} (grouped by {group_by})")
+                    else:
+                        sns.histplot(data=df_result, x=col, bins=30, kde=True, ax=ax)
+                        ax.set_title(f"Histogram of {col}")
+                else:  # Boxplot
+                    if group_by != "None":
+                        sns.boxplot(x=group_by, y=col, data=df_result, ax=ax)
+                        ax.set_title(f"Boxplot of {col} by {group_by}")
+                    else:
+                        sns.boxplot(y=df_result[col], ax=ax)
+                        ax.set_title(f"Boxplot of {col}")
+                st.pyplot(fig)
+    
+        elif chart_type == "Scatter":
+            if len(cols_to_plot) < 2:
+                st.warning("Please select at least two columns for a scatter plot.")
+            else:
+                x_col = cols_to_plot[0]
+                y_col = cols_to_plot[1]
+                fig, ax = plt.subplots()
+                if group_by != "None":
+                    sns.scatterplot(data=df_result, x=x_col, y=y_col, hue=group_by, alpha=0.7, ax=ax)
+                    ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+                else:
+                    sns.scatterplot(data=df_result, x=x_col, y=y_col, alpha=0.6, ax=ax)
+                ax.set_title(f"Scatter: {y_col} vs {x_col}")
+                st.pyplot(fig)
+
 # ============================
-# 5. Interactive Prediction Module
+# 6. Interactive Prediction Module
 # ============================
 elif module == "Interactive Prediction":
     st.title("Interactive Prediction Module")
@@ -426,7 +435,7 @@ elif module == "Interactive Prediction":
         st.success(f"Predicted Potential for {position} using {model_choice}: {prediction[0]:.2f}")
 
 # ============================
-# 6. About Module
+# 7. About Module
 # ============================
 elif module == "About":
     st.title("About the Player Potential Prediction App")
