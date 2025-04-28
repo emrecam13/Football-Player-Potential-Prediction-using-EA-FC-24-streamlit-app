@@ -338,7 +338,7 @@ elif module == "Interactive Prediction":
     position = st.selectbox("Select Position", position_groups)
     model_choice = st.selectbox("Select Model", plot_models)
 
-    st.write("""To understand the value of the input, please see the **"Result Data Basic Statistics"** table in the **"Overview & Data Summary"** module.""")
+    st.write("To understand the value of the input, please see the **"Result Data Basic Statistics"** table in the **"Overview & Data Summary"** module.")
     
     st.subheader(f"Input values for the {position} attributes:")
     inputs = {}
