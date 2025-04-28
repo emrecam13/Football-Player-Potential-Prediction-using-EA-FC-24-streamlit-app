@@ -258,10 +258,7 @@ elif module == "Build Your Own Plot":
     st.title("📊 Build Your Own Plot")
     st.write("Use the form below to select your variables, then hit **Draw Plot**.")
 
-    # 1) Load the result DataFrame (only once, you can @st.cache as desired)
-    df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
-
-    # 2) Build the form
+    # 1) Build the form
     with st.form("custom_plot_form"):
         numeric_cols = df_result.select_dtypes(include="number").columns.tolist()
         cols_to_plot = st.multiselect(
@@ -281,7 +278,7 @@ elif module == "Build Your Own Plot":
 
         draw = st.form_submit_button("Draw Plot")
 
-    # 3) Only render when user clicks
+    # 2) Only render when user clicks
     if draw:
         if chart_type in ["Histogram", "Boxplot"]:
             for col in cols_to_plot:
@@ -382,7 +379,7 @@ elif module == "About":
       2. Choose a chart type.  
       3. (Optional) Group by position groups or preffered foot.  
       4. Click **Draw Plot** to render—this prevents reruns on every widget change.  
-    - **Performance Tip:**  
+    - **Performance Tips:**  
       - Data loading is cached—switching modules won’t re-read the dataset.  
       - Use **Build Your Own Plot** for quick, custom visualizations without re-running the whole summary.  
     """)
