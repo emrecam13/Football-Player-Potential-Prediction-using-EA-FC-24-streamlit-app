@@ -58,7 +58,7 @@ saved_models = {
 }
 
 # Static lists for reuse
-aw_num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
+raw_num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
 position_groups = ["Attacker", "Midfielder", "Defender", "Goalkeeper"]
 plot_models = ["LightGBM", "SVR", "XGBoost", "Linear Regression"]
 
@@ -67,11 +67,11 @@ plot_models = ["LightGBM", "SVR", "XGBoost", "Linear Regression"]
 # ============================
 
 @st.cache_data
-func def load_data(path: str, comp: str):
+def load_data(path: str, comp: str):
     return pd.read_pickle(path, compression=comp)
 
 @st.cache_resource
-func def load_all_models():
+def load_all_models():
     models = {}
     for pos, mfiles in saved_models.items():
         models[pos] = {}
