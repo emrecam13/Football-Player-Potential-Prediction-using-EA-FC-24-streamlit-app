@@ -10,210 +10,120 @@ import seaborn as sns
 # 1. Configuration and Setup
 # ============================
 
+# Working directory
+working_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Define the selected features for each position (as used during training)
 selected_features = {
     "Attacker": [
-        'overall',
-        'age',
-        'skill_ball_control',
-        'skill_dribbling',
-        'attacking_short_passing',
-        'attacking_finishing',
-        'mentality_positioning',
-        'movement_reactions',
-        'power_shot_power',
-        'power_long_shots',
-        'mentality_vision'
+        'overall','age','skill_ball_control','skill_dribbling',
+        'attacking_short_passing','attacking_finishing','mentality_positioning',
+        'movement_reactions','power_shot_power','power_long_shots','mentality_vision'
     ],
     "Midfielder": [
-        'overall',
-        'age',
-        'skill_ball_control',
-        'skill_dribbling',
-        'attacking_short_passing',
-        'mentality_vision',
-        'movement_reactions',
-        'skill_long_passing',
-        'mentality_composure',
-        'mentality_positioning',
-        'power_shot_power'
+        'overall','age','skill_ball_control','skill_dribbling',
+        'attacking_short_passing','mentality_vision','movement_reactions',
+        'skill_long_passing','mentality_composure','mentality_positioning','power_shot_power'
     ],
     "Defender": [
-        'overall',
-        'age',
-        'defending_standing_tackle',
-        'defending_sliding_tackle',
-        'mentality_interceptions',
-        'defending_marking_awareness',
-        'movement_reactions',
-        'attacking_short_passing',
-        'skill_ball_control',
-        'mentality_composure',
-        'attacking_heading_accuracy'
+        'overall','age','defending_standing_tackle','defending_sliding_tackle',
+        'mentality_interceptions','defending_marking_awareness','movement_reactions',
+        'attacking_short_passing','skill_ball_control','mentality_composure','attacking_heading_accuracy'
     ],
     "Goalkeeper": [
-        'overall',
-        'age',
-        'goalkeeping_reflexes',
-        'goalkeeping_diving',
-        'goalkeeping_handling',
-        'goalkeeping_positioning',
-        'goalkeeping_kicking',
-        'movement_reactions',
-        'mentality_composure',
-        'mentality_vision',
-        'goalkeeping_speed'
+        'overall','age','goalkeeping_reflexes','goalkeeping_diving',
+        'goalkeeping_handling','goalkeeping_positioning','goalkeeping_kicking',
+        'movement_reactions','mentality_composure','mentality_vision','goalkeeping_speed'
     ]
 }
 
 # Mapping of each position and each model to its saved pickle filename.
-# Random Forest is replaced by LightGBM.
 saved_models = {
-    "Attacker": {
-        "Linear Regression": "Attacker_Linear_Regression_model.sav",
-        "LightGBM": "Attacker_LightGBM_model.sav",
-        "SVR": "Attacker_SVR_model.sav",
-        "XGBoost": "Attacker_XGBoost_model.sav"
-    },
-    "Midfielder": {
-        "Linear Regression": "Midfielder_Linear_Regression_model.sav",
-        "LightGBM": "Midfielder_LightGBM_model.sav",
-        "SVR": "Midfielder_SVR_model.sav",
-        "XGBoost": "Midfielder_XGBoost_model.sav"
-    },
-    "Defender": {
-        "Linear Regression": "Defender_Linear_Regression_model.sav",
-        "LightGBM": "Defender_LightGBM_model.sav",
-        "SVR": "Defender_SVR_model.sav",
-        "XGBoost": "Defender_XGBoost_model.sav"
-    },
-    "Goalkeeper": {
-        "Linear Regression": "Goalkeeper_Linear_Regression_model.sav",
-        "LightGBM": "Goalkeeper_LightGBM_model.sav",
-        "SVR": "Goalkeeper_SVR_model.sav",
-        "XGBoost": "Goalkeeper_XGBoost_model.sav"
-    }
+    "Attacker":    {"Linear Regression": "Attacker_Linear_Regression_model.sav",
+                      "LightGBM": "Attacker_LightGBM_model.sav",
+                      "SVR": "Attacker_SVR_model.sav",
+                      "XGBoost": "Attacker_XGBoost_model.sav"},
+    "Midfielder":  {"Linear Regression": "Midfielder_Linear_Regression_model.sav",
+                      "LightGBM": "Midfielder_LightGBM_model.sav",
+                      "SVR": "Midfielder_SVR_model.sav",
+                      "XGBoost": "Midfielder_XGBoost_model.sav"},
+    "Defender":    {"Linear Regression": "Defender_Linear_Regression_model.sav",
+                      "LightGBM": "Defender_LightGBM_model.sav",
+                      "SVR": "Defender_SVR_model.sav",
+                      "XGBoost": "Defender_XGBoost_model.sav"},
+    "Goalkeeper":  {"Linear Regression": "Goalkeeper_Linear_Regression_model.sav",
+                      "LightGBM": "Goalkeeper_LightGBM_model.sav",
+                      "SVR": "Goalkeeper_SVR_model.sav",
+                      "XGBoost": "Goalkeeper_XGBoost_model.sav"}
 }
 
-
-# Get the working directory (the directory of the current file, e.g., main.py)
-working_dir = os.path.dirname(os.path.abspath(__file__))
-
-# ----------------------------
-# Load Attacker Models
-# ----------------------------
-attacker_lr_model = pickle.load(open(f'{working_dir}/saved_models/Attacker_Linear_Regression_model.sav', 'rb'))
-attacker_lgb_model = pickle.load(open(f'{working_dir}/saved_models/Attacker_LightGBM_model.sav', 'rb'))
-attacker_svr_model = pickle.load(open(f'{working_dir}/saved_models/Attacker_SVR_model.sav', 'rb'))
-attacker_xgb_model = pickle.load(open(f'{working_dir}/saved_models/Attacker_XGBoost_model.sav', 'rb'))
-
-attacker_models = {
-    "Linear Regression": attacker_lr_model,
-    "LightGBM": attacker_lgb_model,
-    "SVR": attacker_svr_model,
-    "XGBoost": attacker_xgb_model
-}
-
-# ----------------------------
-# Load Midfielder Models
-# ----------------------------
-midfielder_lr_model = pickle.load(open(f'{working_dir}/saved_models/Midfielder_Linear_Regression_model.sav', 'rb'))
-midfielder_lgb_model = pickle.load(open(f'{working_dir}/saved_models/Midfielder_LightGBM_model.sav', 'rb'))
-midfielder_svr_model = pickle.load(open(f'{working_dir}/saved_models/Midfielder_SVR_model.sav', 'rb'))
-midfielder_xgb_model = pickle.load(open(f'{working_dir}/saved_models/Midfielder_XGBoost_model.sav', 'rb'))
-
-midfielder_models = {
-    "Linear Regression": midfielder_lr_model,
-    "LightGBM": midfielder_lgb_model,
-    "SVR": midfielder_svr_model,
-    "XGBoost": midfielder_xgb_model
-}
-# ----------------------------
-# Load Defender Models
-# ----------------------------
-defender_lr_model = pickle.load(open(f'{working_dir}/saved_models/Defender_Linear_Regression_model.sav', 'rb'))
-defender_lgb_model = pickle.load(open(f'{working_dir}/saved_models/Defender_LightGBM_model.sav', 'rb'))
-defender_svr_model = pickle.load(open(f'{working_dir}/saved_models/Defender_SVR_model.sav', 'rb'))
-defender_xgb_model = pickle.load(open(f'{working_dir}/saved_models/Defender_XGBoost_model.sav', 'rb'))
-
-defender_models = {
-    "Linear Regression": defender_lr_model,
-    "LightGBM": defender_lgb_model,
-    "SVR": defender_svr_model,
-    "XGBoost": defender_xgb_model
-}
-
-# ----------------------------
-# Load Goalkeeper Models
-# ----------------------------
-goalkeeper_lr_model = pickle.load(open(f'{working_dir}/saved_models/Goalkeeper_Linear_Regression_model.sav', 'rb'))
-goalkeeper_lgb_model = pickle.load(open(f'{working_dir}/saved_models/Goalkeeper_LightGBM_model.sav', 'rb'))
-goalkeeper_svr_model = pickle.load(open(f'{working_dir}/saved_models/Goalkeeper_SVR_model.sav', 'rb'))
-goalkeeper_xgb_model = pickle.load(open(f'{working_dir}/saved_models/Goalkeeper_XGBoost_model.sav', 'rb'))
-
-goalkeeper_models = {
-    "Linear Regression": goalkeeper_lr_model,
-    "LightGBM": goalkeeper_lgb_model,
-    "SVR": goalkeeper_svr_model,
-    "XGBoost": goalkeeper_xgb_model
-}
-
+# Static lists for reuse
+aw_num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
+position_groups = ["Attacker", "Midfielder", "Defender", "Goalkeeper"]
+plot_models = ["LightGBM", "SVR", "XGBoost", "Linear Regression"]
 
 # ============================
-# 2. Streamlit Sidebar Navigation
+# 2. Cached I/O functions
+# ============================
+
+@st.cache_data
+func def load_data(path: str, comp: str):
+    return pd.read_pickle(path, compression=comp)
+
+@st.cache_resource
+func def load_all_models():
+    models = {}
+    for pos, mfiles in saved_models.items():
+        models[pos] = {}
+        for mname, fname in mfiles.items():
+            fpath = os.path.join(working_dir, 'saved_models', fname)
+            with open(fpath, 'rb') as f:
+                models[pos][mname] = pickle.load(f)
+    return models
+
+# Load data and models once
+df_model  = load_data("dataset/male_players_compressed.pkl.bz2", "bz2")
+df_result = load_data("dataset/df_model_result_compressed.pkl.gz", "gzip")
+all_models = load_all_models()
+
+# ============================
+# 3. Streamlit Sidebar & Nav
 # ============================
 st.sidebar.title("Navigation")
-module = st.sidebar.selectbox("Select Module",
-                              ["Overview & Data Summary",
-                               "Model Evaluation",
-                               "Interactive Prediction",
-                               "Build Your Own Plot",
-                               "About"])
-
-# =============================
-# 3. Overview & Data Summary Module
-# =============================
+module = st.sidebar.selectbox("Select Module", [
+    "Overview & Data Summary",
+    "Model Evaluation",
+    "Interactive Prediction",
+    "Build Your Own Plot",
+    "About"
+])
+# ============================
+# 4. Modules
+# ============================
 if module == "Overview & Data Summary":
     st.title("Player Potential Prediction App")
     st.header("Overview & Data Summary")
-    st.write("Below you’ll see first 5 rows of the _raw_ dataset.")
 
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    # 1) Load raw features
-    df_model = pd.read_pickle("dataset/male_players_compressed.pkl.bz2", compression="bz2")
-
-    # 2) Show raw data
     st.subheader("🔹 Raw Data Sample")
     st.dataframe(df_model.head())
 
     st.subheader("🔹 Raw Data Basic Statistics")
     st.write(df_model.describe())
 
-    # 3) Visualize raw features
-    # 3a) Distributions
     st.subheader("🔹 Distributions of Raw Numeric Features")
-    raw_num_cols = ["age","height_cm","weight_kg","overall","potential"]
-    fig, axes = plt.subplots(len(raw_num_cols),1,figsize=(8,4*len(raw_num_cols)))
-    fig.subplots_adjust(hspace=0.3)
-    for ax,col in zip(axes, raw_num_cols):
+    fig, axes = plt.subplots(len(raw_num_cols), 1, figsize=(8, 4*len(raw_num_cols)))
+    fig.subplots_adjust(hspace=0.6)
+    for ax, col in zip(axes, raw_num_cols):
         sns.histplot(df_model[col], bins=30, kde=True, ax=ax)
         ax.set_title(f"{col} Distribution")
     st.pyplot(fig)
 
-    # 4) Now load your results (predictions + residuals)
-    df_result = pd.read_pickle("dataset/df_model_result_compressed.pkl.gz", compression="gzip")
     st.subheader("🔸 Result Sample (Model Outputs)")
-    st.write("Below you’ll see first 5 rows of the _Result_ dataset.")
     st.dataframe(df_result.head())
     
-    # 3b) Position counts in the result data
     st.subheader("🔹 Raw Data: Players by Position Group")
     st.bar_chart(df_result["position_group"].value_counts())
 
-    # 5) Predicted vs. Actual scatter (LightGBM)
     st.subheader("🔸 Predicted vs. Actual Potential (LightGBM)")
     fig, ax = plt.subplots(figsize=(6,6))
     ax.scatter(df_result["potential"], df_result["predicted_potential_LightGBM"], alpha=0.3)
@@ -223,7 +133,6 @@ if module == "Overview & Data Summary":
     ax.set_ylabel("Predicted Potential")
     st.pyplot(fig)
 
-    # 6) Residual distribution (LightGBM)
     st.subheader("🔸 Residuals Distribution (LightGBM)")
     fig, ax = plt.subplots(figsize=(8,4))
     sns.histplot(df_result["residuals_LightGBM"], kde=True, ax=ax)
@@ -231,7 +140,6 @@ if module == "Overview & Data Summary":
     ax.set_title("LightGBM Residuals")
     st.pyplot(fig)
 
-    # 7) (Optional) compare mean & max errors by position
     agg = df_result.groupby("position_group").agg(
         mean_resid=("residuals_LightGBM","mean"),
         max_resid=("residuals_LightGBM", lambda x: x.abs().max())
@@ -240,7 +148,7 @@ if module == "Overview & Data Summary":
     st.dataframe(agg)
 
 # =============================
-# 4. Model Evaluation Module
+# 5. Model Evaluation Module
 # =============================
 elif module == "Model Evaluation":
     st.title("Model Evaluation & Comparisons")
@@ -343,7 +251,7 @@ elif module == "Model Evaluation":
 
 
 # =======================
-# 5. Build your own Plot
+# 6. Build your own Plot
 # =======================
 
 elif module == "Build Your Own Plot":
@@ -414,60 +322,28 @@ elif module == "Build Your Own Plot":
 
 
 # ============================
-# 6. Interactive Prediction Module
+# 7. Interactive Prediction Module
 # ============================
 elif module == "Interactive Prediction":
     st.title("Interactive Prediction Module")
-
-    # Allow the user to select a position
-    position = st.selectbox("Select Position", ["Attacker", "Midfielder", "Defender", "Goalkeeper"])
-
-    # Allow the user to select a model (Random Forest replaced with LightGBM)
-    model_choice = st.selectbox("Select Model", ["LightGBM", "Linear Regression", "SVR", "XGBoost"])
+    position = st.selectbox("Select Position", position_groups)
+    model_choice = st.selectbox("Select Model", plot_models)
 
     st.subheader(f"Input values for the {position} attributes:")
-    attributes = selected_features[position]
-    user_input = {}
-    
-    for attr in attributes:
-        if attr == "age":
-            # Age must be between 16 and 40
-            user_input[attr] = st.number_input(
-                f"Enter value for {attr}", 
-                min_value=16, 
-                max_value=40, 
-                value=20  # sensible default in the middle
-            )
-        else:
-            # All other attributes between 0 and 99
-            user_input[attr] = st.number_input(
-                f"Enter value for {attr}", 
-                min_value=0, 
-                max_value=99, 
-                value=75
-            )
+    inputs = {}
+    for attr in selected_features[position]:
+        default = 20 if attr == 'age' else 70
+        minv, maxv = (16,40) if attr=='age' else (0,99)
+        inputs[attr] = st.number_input(f"{attr}", minv, maxv, value=default)
 
     if st.button("Predict Potential"):
-        def load_model(filename):
-            path = os.path.join(os.getcwd(), 'saved_models', filename)
-            try:
-                with open(path, 'rb') as f:
-                    return pickle.load(f)
-            except FileNotFoundError:
-                st.error(f"❌ Model file not found: {path}")
-            except Exception as e:
-                st.error(f"⚠️ Error loading model: {e}")
-        # Load the corresponding model file for the selected position and model
-        model_filename = saved_models[position][model_choice]
-        print("Model filename:", model_filename)
-        model = load_model(model_filename)
-        # Convert user input to DataFrame ensuring the feature order is maintained
-        X_new = pd.DataFrame([user_input], columns=attributes)
-        prediction = model.predict(X_new)
-        st.success(f"Predicted Potential for {position} using {model_choice}: {prediction[0]:.2f}")
-
+        model = all_models[position][model_choice]
+        X_new = pd.DataFrame([inputs], columns=selected_features[position])
+        pred = model.predict(X_new)[0]
+        st.success(f"Predicted Potential: {pred:.2f}")
+        
 # ============================
-# 7. About Module
+# 8. About Module
 # ============================
 elif module == "About":
     st.title("About the Player Potential Prediction App")
@@ -576,4 +452,4 @@ elif module == "About":
 # ============================
 # Additional info
 # ============================
-st.sidebar.info("Developed by Emre Çam for the MSc Data Science & AI dissertation at Bournemouth University.")
+st.sidebar.info("Developed by **Emre Çam** for the MSc Data Science & AI dissertation at Bournemouth University.")
