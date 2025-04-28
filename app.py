@@ -58,7 +58,7 @@ saved_models = {
 }
 
 # Static lists for reuse
-raw_num_cols = ["age", "height_cm", "weight_kg", "overall", "potential"]
+raw_num_cols = ["age", "overall", "potential"]
 position_groups = ["Attacker", "Midfielder", "Defender", "Goalkeeper"]
 plot_models = ["LightGBM", "SVR", "XGBoost", "Linear Regression"]
 
