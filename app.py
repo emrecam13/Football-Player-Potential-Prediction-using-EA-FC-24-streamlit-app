@@ -339,7 +339,7 @@ elif module == "Interactive Prediction":
     model_choice = st.selectbox("Select Model", plot_models)
 
     st.write("""To understand the value of the input, please see the **"Result Data Basic Statistics"** table in the **"Overview & Data Summary"** module.""")
-    st.link_button("Go to Result Data Basic Statistics", "https://football-player-potential-prediction-using-ea-fc-24-app.streamlit.app/#9639e1c9")
+    st.link_button("Go to :blue[Result Data Basic Statistics]", "https://football-player-potential-prediction-using-ea-fc-24-app.streamlit.app/#9639e1c9")
 
     st.subheader(f"Input values for the {position} attributes:")
     inputs = {}
