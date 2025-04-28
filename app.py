@@ -329,7 +329,7 @@ elif module == "Interactive Prediction":
     st.subheader(f"Input values for the {position} attributes:")
     inputs = {}
     for attr in selected_features[position]:
-        default = 20 if attr == 'age' else 70
+        default = 20 if attr == 'age' else 75
         minv, maxv = (16,40) if attr=='age' else (0,99)
         inputs[attr] = st.number_input(f"{attr}", minv, maxv, value=default)
 
