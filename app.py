@@ -105,12 +105,15 @@ if module == "Overview & Data Summary":
     st.header("Overview & Data Summary")
 
     st.subheader("🔹 Raw Data Sample")
+    st.write("This dataframe below shows the first 5 rows of the raw dataset used to analysing, exploring, feature engineering, and building the prediction models.")
     st.dataframe(df_model.head())
 
     st.subheader("🔹 Raw Data Basic Statistics")
+    st.write("The table below shows the basic statistics of the raw dataset.")
     st.write(df_model.describe())
 
     st.subheader("🔹 Distributions of Raw Numeric Features")
+    st.write("The graphs below shows the distributions of age, overall, and potential features of the raw dataset.")
     fig, axes = plt.subplots(len(raw_num_cols), 1, figsize=(8, 4*len(raw_num_cols)))
     fig.subplots_adjust(hspace=0.6)
     for ax, col in zip(axes, raw_num_cols):
@@ -119,12 +122,15 @@ if module == "Overview & Data Summary":
     st.pyplot(fig)
 
     st.subheader("🔸 Result Sample (Model Outputs)")
+    st.write("This dataframe is the first 5 rows of the result dataset which is the final version.")
     st.dataframe(df_result.head())
     
-    st.subheader("🔹 Raw Data: Players by Position Group")
+    st.subheader("🔹 Result Data: Players by Position Group")
+    st.write("This barchart shows the amount of players for each position group.")
     st.bar_chart(df_result["position_group"].value_counts())
 
-    st.subheader("🔸 Predicted vs. Actual Potential (LightGBM)")
+    st.subheader("🔸 Predicted (LightGBM) vs. Actual Potential")
+    st.write("This scatter plot describes the distribution of players' actual potential and predicted potential by LightGBM (The dotted red line is the perfect line).")
     fig, ax = plt.subplots(figsize=(6,6))
     ax.scatter(df_result["potential"], df_result["predicted_potential_LightGBM"], alpha=0.3)
     mn, mx = df_result["potential"].min(), df_result["potential"].max()
@@ -134,6 +140,7 @@ if module == "Overview & Data Summary":
     st.pyplot(fig)
 
     st.subheader("🔸 Residuals Distribution (LightGBM)")
+    st.write("The difference distribution is shown down below between the actual potential and predicted potential (LightGBM).")
     fig, ax = plt.subplots(figsize=(8,4))
     sns.histplot(df_result["residuals_LightGBM"], kde=True, ax=ax)
     ax.set_xlabel("Residual (Actual − Predicted)")
@@ -145,6 +152,7 @@ if module == "Overview & Data Summary":
         max_resid=("residuals_LightGBM", lambda x: x.abs().max())
     )
     st.subheader("🔸 LightGBM Residuals by Position Group")
+    st.write("For each position group, both the average and max residuals is shown in this table.")
     st.dataframe(agg)
 
 # =============================
