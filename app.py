@@ -280,7 +280,7 @@ elif module == "Build Your Own Plot":
         )
         chart_type = st.selectbox(
             "Select chart type",
-            ["Histogram", "Boxplot", "Scatter"]
+            ["Boxplot", "Histogram", "Scatter"]
         )
         cat_cols = df_result[["position_group", "preferred_foot"]].columns.tolist()
         group_by = st.selectbox(
