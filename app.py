@@ -124,6 +124,10 @@ if module == "Overview & Data Summary":
     st.subheader("🔸 Result Sample (Model Outputs)")
     st.write("This dataframe is the first 5 rows of the result dataset which is the final version.")
     st.dataframe(df_result.head())
+
+    st.subheader("🔹 Result Data Basic Statistics")
+    st.write("The table below shows the basic statistics of the result dataset.")
+    st.write(df_result.describe())
     
     st.subheader("🔹 Result Data: Players by Position Group")
     st.write("This barchart shows the amount of players for each position group.")
@@ -334,6 +338,8 @@ elif module == "Interactive Prediction":
     position = st.selectbox("Select Position", position_groups)
     model_choice = st.selectbox("Select Model", plot_models)
 
+    st.subheader("To understand the value of the input, please see the **"Result Data Basic Statistics"** table in the **"Overview & Data Summary"** module.")
+    
     st.subheader(f"Input values for the {position} attributes:")
     inputs = {}
     for attr in selected_features[position]:
