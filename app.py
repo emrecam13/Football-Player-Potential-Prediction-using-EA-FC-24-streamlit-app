@@ -219,6 +219,18 @@ elif module == "Model Evaluation":
     st.subheader("Summary Table")
     st.dataframe(df_eval.set_index(["Position","Model"]))
 
+    fig, axes = plt.subplots(1,3, figsize=(18,5))
+    sns.barplot(data=df_eval, x="Position", y="rmse", hue="Model", ax=axes[0])
+    axes[0].set_title("RMSE by Position & Model")
+    sns.barplot(data=df_eval, x="Position", y="mae", hue="Model", ax=axes[1])
+    axes[1].set_title("MAE by Position & Model")
+    sns.barplot(data=df_eval, x="Position", y="r2",  hue="Model", ax=axes[2])
+    axes[2].set_title("R² by Position & Model")
+    for ax in axes:
+        ax.legend(loc="upper right")
+    st.pyplot(fig)
+
+    
     st.subheader("Attacker Group", divider=True)
     st.write("""
     **Analysis**: **LightGBM** achieves the lowest RMSE (1.86) and MAE (1.17), and the highest R² (0.914), outperforming XGBoost (RMSE 1.89, MAE 1.19, R² 0.911), SVR, and Linear Regression.""")
@@ -234,20 +246,6 @@ elif module == "Model Evaluation":
     st.subheader("Goalkeeper Group", divider=True)
     st.write("""
     **Analysis**: With the lowest RMSE (1.72), lowest MAE (1.12), and highest R² (0.928), **LightGBM** slightly outperforms XGBoost (RMSE 1.74, MAE 1.13, R² 0.927).""")
-
-    
-    # --- 3. Bar-Charts for each metric ---
-    fig, axes = plt.subplots(1,3, figsize=(18,5))
-    sns.barplot(data=df_eval, x="Position", y="rmse", hue="Model", ax=axes[0])
-    axes[0].set_title("RMSE by Position & Model")
-    sns.barplot(data=df_eval, x="Position", y="mae", hue="Model", ax=axes[1])
-    axes[1].set_title("MAE by Position & Model")
-    sns.barplot(data=df_eval, x="Position", y="r2",  hue="Model", ax=axes[2])
-    axes[2].set_title("R² by Position & Model")
-    for ax in axes:
-        ax.legend(loc="upper right")
-    st.pyplot(fig)
-
 
     st.subheader("Overall Conclusion", divider=True)
     st.write("""
