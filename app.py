@@ -458,8 +458,9 @@ elif module == "About":
     """)
 
     st.write("**Contact:** emrecam13@gmail.com")
-    st.write("Share your feedback: Please fill out this quick, anonymous survey to help me improve the app! https://app.onlinesurveys.jisc.ac.uk/s/bournemouth/football-player-potential-prediction-app-survey")
-
+    survey_url = "https://app.onlinesurveys.jisc.ac.uk/s/bournemouth/football-player-potential-prediction-app-survey"
+    if st.button("📝 Take the Survey"):
+        st.markdown(f"[Click here to open the survey]({survey_url})", unsafe_allow_html=True)
 # ============================
 # Additional info
 # ============================
