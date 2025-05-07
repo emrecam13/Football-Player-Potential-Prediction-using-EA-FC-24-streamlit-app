@@ -467,7 +467,7 @@ elif module == "About":
     # ───────────────────────────────────────────────
 
     # Raw URL to your DOCX in GitHub (click “Raw” on GitHub and paste it here)
-    docx_url = "PI Sheet Template Questionnaires _ No Personal Information (Emre Cam).docx"
+    docx_url = "https://github.com/emrecam13/Football-Player-Potential-Prediction-using-EA-FC-24-streamlit-app/blob/main/PI%20Sheet%20Template%20Questionnaires%20_%20No%20Personal%20Information%20(Emre%20Cam).docx"
 
     @st.cache_data(show_spinner=False)
     def load_docx(url):
