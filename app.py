@@ -461,6 +461,31 @@ elif module == "About":
     survey_url = "https://app.onlinesurveys.jisc.ac.uk/s/bournemouth/football-player-potential-prediction-app-survey"
     if st.button("📝 Take the Survey"):
         st.markdown(f"[Click here to open the survey]({survey_url})", unsafe_allow_html=True)
+
+    # ───────────────────────────────────────────────
+    # Download Participant Information Form (.docx)
+    # ───────────────────────────────────────────────
+
+    # Raw URL to your DOCX in GitHub (click “Raw” on GitHub and paste it here)
+    docx_url = "PI Sheet Template Questionnaires _ No Personal Information (Emre Cam).docx"
+
+    @st.cache_data(show_spinner=False)
+    def load_docx(url):
+        import requests
+        resp = requests.get(url)
+        resp.raise_for_status()
+        return resp.content
+
+    docx_bytes = load_docx(docx_url)
+
+    st.markdown("### Download the Participant Information Form")
+    st.download_button(
+        label="📄 Download Info Sheet (DOCX)",
+        data=docx_bytes,
+        file_name="participant_information.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+
 # ============================
 # Additional info
 # ============================
