@@ -465,19 +465,11 @@ elif module == "About":
     # ───────────────────────────────────────────────
     # Download Participant Information Form (.docx)
     # ───────────────────────────────────────────────
-
-    # Raw URL to your DOCX in GitHub (click “Raw” on GitHub and paste it here)
-    docx_url = "https://github.com/emrecam13/Football-Player-Potential-Prediction-using-EA-FC-24-streamlit-app/blob/main/PI%20Sheet%20Template%20Questionnaires%20_%20No%20Personal%20Information%20(Emre%20Cam).docx"
-
-    @st.cache_data(show_spinner=False)
-    def load_docx(url):
-        import requests
-        resp = requests.get(url)
-        resp.raise_for_status()
-        return resp.content
-
-    docx_bytes = load_docx(docx_url)
-
+    # Path relative to this file
+    docx_path = os.path.join(working_dir, "PI Sheet Template Questionnaires _ No Personal Information (Emre Cam).docx")
+    with open(docx_path, "rb") as f:
+        docx_bytes = f.read()
+    
     st.markdown("### Download the Participant Information Form")
     st.download_button(
         label="📄 Download Info Sheet (DOCX)",
@@ -485,6 +477,8 @@ elif module == "About":
         file_name="participant_information.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
+
+
 
 # ============================
 # Additional info
