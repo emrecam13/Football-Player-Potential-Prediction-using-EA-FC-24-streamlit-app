@@ -1,9 +1,4 @@
 import streamlit as st
-st.set_page_config(
-    page_title="Player Potential Prediction App",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 import pandas as pd
 import numpy as np
 import os
